@@ -1,11 +1,16 @@
 package asalty.fish.clickhousejpa.jdbc;
 
+import com.google.gson.Gson;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.Resource;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -41,14 +46,24 @@ public class ClickHouseJdbcConfig {
 
     private Connection connection;
 
+    private DataSource dataSource;
+
+    @Resource
+    HikariConfig hikariConfig;
+
     @Bean
     public Statement clickHouseStatement() throws Exception {
-        Class.forName(driverClassName);
-        log.info("clickhouse driver class name: {}", driverClassName);
-        log.info("clickhouse url: {}", fullUrl());
-        connection = DriverManager.getConnection(fullUrl(), username, password);
-        log.info("clickhouse connection init");
-        return connection.createStatement();
+        System.out.println(new Gson().toJson(hikariConfig));
+        hikariConfig.setJdbcUrl(fullUrl());
+        hikariConfig.setUsername(username);
+        hikariConfig.setPassword(password);
+        dataSource = new HikariDataSource(hikariConfig);
+        return dataSource.getConnection().createStatement();
+    }
+
+    @Bean
+    public Connection clickHouseConnection() throws Exception {
+        return dataSource.getConnection();
     }
 
 }

@@ -9,3 +9,10 @@ spring:
       database: tutorial
       username: default
       password:
+      hikari:
+        # 连接池的最大连接数
+        maximum-pool-size: 50
+        # 空闲超时
+        idleTimeout: 1000000
+        # 连接超时时间
+        connection-timeout: 5000
