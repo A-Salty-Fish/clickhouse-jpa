@@ -1,11 +1,13 @@
-package asalty.fish.clickhousejpa.CRUDStatementHandler;
+package asalty.fish.clickhousejpa.CRUDStatementHandler.Find;
 
+import asalty.fish.clickhousejpa.CRUDStatementHandler.statementHandler.StatementHandler;
 import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
 import asalty.fish.clickhousejpa.mapper.ClickHouseMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.List;
  * @date 2022/2/28 16:44
  */
 @Configuration
-public class ReadStatementHandler {
+public class ReadStatementHandler implements StatementHandler {
 
     String baseSQL = "select * from";
 
@@ -95,5 +97,20 @@ public class ReadStatementHandler {
             sql.replace(sql.indexOf("?"), sql.indexOf("?") + 1, arg);
         }
         return sql.toString();
+    }
+
+    @Override
+    public boolean needHandle(Method method) {
+        return method.getName().startsWith("findAllBy");
+    }
+
+    @Override
+    public String getStatement(Method method, Object[] args, Class<?> entity) throws Exception {
+        String[] sqlArgs = new String[args.length];
+        for (int i = 0; i < args.length; i++) {
+            sqlArgs[i] = args[i].toString();
+        }
+        String sql = prepareFindAllSQL(entity, method.getName(), sqlArgs);
+        return sql;
     }
 }

@@ -1,5 +1,8 @@
 package asalty.fish.clickhousejpa.CRUDStatementHandler;
 
+import asalty.fish.clickhousejpa.CRUDStatementHandler.Find.FindAllInterceptor;
+import asalty.fish.clickhousejpa.CRUDStatementHandler.Find.FindAllStatementProxy;
+import asalty.fish.clickhousejpa.CRUDStatementHandler.Find.ReadStatementHandler;
 import asalty.fish.clickhousejpa.example.dao.HitsV1Dao;
 import asalty.fish.clickhousejpa.example.entity.hits_v1;
 import com.google.gson.Gson;
@@ -54,11 +57,11 @@ public class ReadStatementHandlerTest {
     }
 
     @Resource
-    FindAllProxy findAllProxy;
+    FindAllStatementProxy findAllStatementProxy;
 
     @Test
     public void testFindAllProxy() throws Exception {
-        HitsV1Dao hitsV1Dao = findAllProxy.getProxy(HitsV1Dao.class);
+        HitsV1Dao hitsV1Dao = findAllStatementProxy.getProxy(HitsV1Dao.class);
         System.out.println(hitsV1Dao.findAllByWatchID(Long.valueOf("4944118417295196513")));
     }
 

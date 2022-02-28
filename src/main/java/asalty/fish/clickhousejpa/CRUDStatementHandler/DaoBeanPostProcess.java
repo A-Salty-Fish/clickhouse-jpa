@@ -1,5 +1,7 @@
 package asalty.fish.clickhousejpa.CRUDStatementHandler;
 
+import asalty.fish.clickhousejpa.CRUDStatementHandler.Find.FindAllStatementProxy;
+import asalty.fish.clickhousejpa.CRUDStatementHandler.statementHandler.StatementProxy;
 import asalty.fish.clickhousejpa.annotation.ClickHouseRepository;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -26,15 +28,14 @@ public class DaoBeanPostProcess implements ApplicationContextAware, BeanPostProc
     }
 
     @Resource
-    FindAllProxy findAllProxy;
+    StatementProxy findAllStatementProxy;
 
+    // todo 后处理器接口化
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         // 只替换dao bean
         if (bean.getClass().getAnnotation(ClickHouseRepository.class) != null) {
-            // 如果遇到需要替换的Bean，我们直接换成自己实现的bean
-            // 这里的myConfig要继承自defaultConfig，否则引用的地方会报错
-            return findAllProxy.getProxy(bean.getClass());
+            return findAllStatementProxy.getProxy(bean.getClass());
         }
         return bean;
     }
