@@ -1,7 +1,9 @@
 package asalty.fish.clickhousejpa.CRUDStatementHandler;
 
 import asalty.fish.clickhousejpa.annotation.ClickHouseRepository;
+import asalty.fish.clickhousejpa.example.dao.HitsV1Dao;
 import asalty.fish.clickhousejpa.mapper.ClickHouseMapper;
+import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 import org.springframework.context.annotation.Configuration;
@@ -46,5 +48,4 @@ public class FindAllInterceptor implements MethodInterceptor {
         }
         return methodProxy.invokeSuper(obj, args);
     }
-
 }
