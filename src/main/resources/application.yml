@@ -1,0 +1,11 @@
+server:
+  port: 9001
+spring:
+  jpa:
+    clickhouse:
+      driver-class-name: com.github.housepower.jdbc.ClickHouseDriver
+      url: jdbc:clickhouse://localhost
+      port: 19000
+      database: tutorial
+      username: default
+      password:
