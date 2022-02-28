@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 /**
@@ -38,13 +39,16 @@ public class ClickHouseJdbcConfig {
         return url + ":" + port + "/" + database;
     }
 
+    private Connection connection;
+
     @Bean
     public Statement clickHouseStatement() throws Exception {
         Class.forName(driverClassName);
         log.info("clickhouse driver class name: {}", driverClassName);
         log.info("clickhouse url: {}", fullUrl());
-        Connection conn = DriverManager.getConnection(fullUrl(), username, password);
+        connection = DriverManager.getConnection(fullUrl(), username, password);
         log.info("clickhouse connection init");
-        return conn.createStatement();
+        return connection.createStatement();
     }
+
 }
