@@ -1,9 +1,8 @@
 package asalty.fish.clickhousejpa.CRUDStatementHandler;
 
 import asalty.fish.clickhousejpa.annotation.ClickHouseRepository;
-import asalty.fish.clickhousejpa.example.dao.HitsV1Dao;
 import asalty.fish.clickhousejpa.mapper.ClickHouseMapper;
-import net.sf.cglib.proxy.Enhancer;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +19,7 @@ import java.sql.Statement;
  * @date 2022/2/28 18:07
  */
 @Configuration
+@Slf4j
 @Scope("prototype")
 public class FindAllInterceptor implements MethodInterceptor {
 
@@ -42,7 +42,7 @@ public class FindAllInterceptor implements MethodInterceptor {
                     sqlArgs[i] = args[i].toString();
                 }
                 String sql = readStatementHandler.prepareFindAllSQL(clickHouseRepository.entity(), method.getName(), sqlArgs);
-                System.out.println(sql);
+                log.info(obj.getClass().getSimpleName() + ": " + sql);
                 return clickHouseMapper.convertResultSetToList(clickHouseStatement.executeQuery(sql), clickHouseRepository.entity());
             }
         }

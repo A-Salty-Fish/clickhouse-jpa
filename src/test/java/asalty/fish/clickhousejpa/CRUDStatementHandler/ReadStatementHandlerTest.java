@@ -61,4 +61,13 @@ public class ReadStatementHandlerTest {
         HitsV1Dao hitsV1Dao = findAllProxy.getProxy(HitsV1Dao.class);
         System.out.println(hitsV1Dao.findAllByWatchID(Long.valueOf("4944118417295196513")));
     }
+
+    @Resource
+    HitsV1Dao hitsV1Dao;
+
+    @Test
+    public void testInjection() throws Exception {
+        System.out.println(hitsV1Dao);
+        System.out.println(hitsV1Dao.findAllByWatchID(Long.valueOf("4944118417295196513")));
+    }
 }
