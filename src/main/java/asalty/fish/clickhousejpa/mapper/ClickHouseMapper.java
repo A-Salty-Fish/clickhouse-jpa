@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author 13090
  * @version 1.0
- * @description: TODO
+ * @description: ClickHouse jdbc的映射器
  * @date 2022/2/28 14:50
  */
 @Configuration
@@ -21,11 +21,7 @@ public class ClickHouseMapper {
     ConcurrentHashMap<String, HashMap<String, Integer>> columnNameMap = new ConcurrentHashMap<>(16);
 
     public void addColumnName(String tableName, String columnName, Integer columnIndex) {
-        HashMap<String, Integer> columnNameMap = this.columnNameMap.get(tableName);
-        if (columnNameMap == null) {
-            columnNameMap = new HashMap<>(16);
-            this.columnNameMap.put(tableName, columnNameMap);
-        }
+        HashMap<String, Integer> columnNameMap = this.columnNameMap.computeIfAbsent(tableName, k -> new HashMap<>(16));
         columnNameMap.put(columnName, columnIndex);
     }
 
@@ -74,7 +70,7 @@ public class ClickHouseMapper {
     /**
      * 将 string 转换为对应的类型
      */
-    public void convertAndSetStringToOtherType(Object t, Class type, Method method, String value) {
+    public void convertAndSetStringToOtherType(Object t, Class<?> type, Method method, String value) {
         try {
             if (type == String.class) {
                 method.invoke(t, value);
