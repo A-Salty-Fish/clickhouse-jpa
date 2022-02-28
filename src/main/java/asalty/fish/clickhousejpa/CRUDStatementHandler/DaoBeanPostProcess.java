@@ -1,7 +1,6 @@
 package asalty.fish.clickhousejpa.CRUDStatementHandler;
 
-import asalty.fish.clickhousejpa.CRUDStatementHandler.Find.FindAllStatementProxy;
-import asalty.fish.clickhousejpa.CRUDStatementHandler.statementHandler.StatementProxy;
+import asalty.fish.clickhousejpa.CRUDStatementHandler.statementHandler.StatementHandler;
 import asalty.fish.clickhousejpa.annotation.ClickHouseRepository;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -27,15 +26,25 @@ public class DaoBeanPostProcess implements ApplicationContextAware, BeanPostProc
         this.applicationContext = applicationContext;
     }
 
+    StatementHandler[] statementHandlers;
+
     @Resource
-    StatementProxy findAllStatementProxy;
+    CRUDProxy crudProxy;
 
     // todo 后处理器接口化
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        if (statementHandlers == null) {
+            String[] statementHandlerNames = applicationContext.getBeanNamesForType(StatementHandler.class);
+            statementHandlers = new StatementHandler[statementHandlerNames.length];
+            for (int i = 0; i < statementHandlerNames.length; i++) {
+                statementHandlers[i] = applicationContext.getBean(statementHandlerNames[i], StatementHandler.class);
+            }
+            crudProxy.setStatementInterceptor(statementHandlers);
+        }
         // 只替换dao bean
         if (bean.getClass().getAnnotation(ClickHouseRepository.class) != null) {
-            return findAllStatementProxy.getProxy(bean.getClass());
+            return crudProxy.getProxy(bean.getClass());
         }
         return bean;
     }

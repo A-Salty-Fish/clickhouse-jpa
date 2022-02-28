@@ -18,4 +18,7 @@ public class HitsV1Dao {
         return null;
     }
 
+    public Object testHandler(String s) {
+        return null;
+    }
 }

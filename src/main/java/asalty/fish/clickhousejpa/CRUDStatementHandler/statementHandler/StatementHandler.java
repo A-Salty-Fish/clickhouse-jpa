@@ -23,4 +23,9 @@ public interface StatementHandler {
      * @return
      */
     public String getStatement(Method method, Object[] args, Class<?> entity) throws Exception;
+
+    /**
+     * 拦截后的sql的结果处理器
+     */
+    public Object resultHandler(String sql, Class<?> entity) throws Exception;
 }

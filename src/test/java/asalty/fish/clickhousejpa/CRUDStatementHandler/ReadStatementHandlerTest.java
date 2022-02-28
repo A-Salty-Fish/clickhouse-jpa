@@ -1,12 +1,9 @@
 package asalty.fish.clickhousejpa.CRUDStatementHandler;
 
-import asalty.fish.clickhousejpa.CRUDStatementHandler.Find.FindAllInterceptor;
-import asalty.fish.clickhousejpa.CRUDStatementHandler.Find.FindAllStatementProxy;
 import asalty.fish.clickhousejpa.CRUDStatementHandler.Find.ReadStatementHandler;
 import asalty.fish.clickhousejpa.example.dao.HitsV1Dao;
 import asalty.fish.clickhousejpa.example.entity.hits_v1;
 import com.google.gson.Gson;
-import net.sf.cglib.proxy.Enhancer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,32 +42,16 @@ public class ReadStatementHandlerTest {
     }
 
     @Resource
-    FindAllInterceptor findAllInterceptor;
-
-    @Test
-    public void testPrepareFindAllInterceptor() throws Exception {
-        Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(HitsV1Dao.class);
-        enhancer.setCallback(findAllInterceptor);
-        HitsV1Dao hitsV1Dao = (HitsV1Dao) enhancer.create();
-        System.out.println(hitsV1Dao.findAllByWatchID(Long.valueOf("4944118417295196513")));
-    }
-
-    @Resource
-    FindAllStatementProxy findAllStatementProxy;
-
-    @Test
-    public void testFindAllProxy() throws Exception {
-        HitsV1Dao hitsV1Dao = findAllStatementProxy.getProxy(HitsV1Dao.class);
-        System.out.println(hitsV1Dao.findAllByWatchID(Long.valueOf("4944118417295196513")));
-    }
-
-    @Resource
     HitsV1Dao hitsV1Dao;
 
     @Test
     public void testInjection() throws Exception {
         System.out.println(hitsV1Dao);
         System.out.println(hitsV1Dao.findAllByWatchID(Long.valueOf("4944118417295196513")));
+    }
+
+    @Test
+    public void testCRUDPorxy() {
+        System.out.println(hitsV1Dao.testHandler("4944118417295196513"));
     }
 }

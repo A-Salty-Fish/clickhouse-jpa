@@ -5,6 +5,7 @@ import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
 import asalty.fish.clickhousejpa.mapper.ClickHouseMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
@@ -18,7 +19,7 @@ import java.util.List;
  * @description: 用于搜索的语句处理器
  * @date 2022/2/28 16:44
  */
-@Configuration
+@Service
 public class ReadStatementHandler implements StatementHandler {
 
     String baseSQL = "select * from";
@@ -112,5 +113,10 @@ public class ReadStatementHandler implements StatementHandler {
         }
         String sql = prepareFindAllSQL(entity, method.getName(), sqlArgs);
         return sql;
+    }
+
+    @Override
+    public Object resultHandler(String sql, Class<?> entity) throws Exception {
+        return clickHouseMapper.convertResultSetToList(clickHouseStatement.executeQuery(sql), entity);
     }
 }
