@@ -28,4 +28,8 @@ public class ReadStatementHandlerTest {
         System.out.println(new Gson().toJson(allLimitedBy));
     }
 
+    @Test
+    public void testGetFindAllSqlFromMethodName() throws Exception {
+        System.out.println(readStatementHandler.getFindAllSqlFromMethodName(hits_v1.class, "findAllBy1And2Or3And4Or5And6"));
+    }
 }

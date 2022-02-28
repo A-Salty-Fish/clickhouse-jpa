@@ -1,12 +1,10 @@
 package asalty.fish.clickhousejpa.CRUDStatementHandler;
 
 import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
-import asalty.fish.clickhousejpa.jdbc.ClickHouseJdbcConfig;
 import asalty.fish.clickhousejpa.mapper.ClickHouseMapper;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -54,4 +52,35 @@ public class ReadStatementHandler {
         return clickHouseMapper.convertResultSetToList(clickHouseStatement.executeQuery(sql), clazz);
     }
 
+    /**
+     * 暂时只支持 and 和 or 懒得写其他的解析了
+     * @param clazz
+     * @param methodName
+     * @return
+     * @throws Exception
+     */
+    public String getFindAllSqlFromMethodName(Class<?> clazz, String methodName) throws Exception {
+        // 方法前缀
+        if (!methodName.startsWith("findAllBy")) {
+            return null;
+        }
+        String methodNameLeft = methodName.substring(9);
+        StringBuilder sql = new StringBuilder(databaseSQL(clazz));
+        if (methodNameLeft.length() > 0) {
+            sql.append(" where ");
+        }
+        String[] methodNameLeftSplit = methodNameLeft.split("And|Or");
+        for (String methodNameLeftSplitItem : methodNameLeftSplit) {
+            sql.append(methodNameLeftSplitItem + " = ?");
+            methodNameLeft = methodNameLeft.substring(methodNameLeftSplitItem.length());
+            if (methodNameLeft.startsWith("And")) {
+                sql.append(" and ");
+                methodNameLeft = methodNameLeft.substring(3);
+            } else if (methodNameLeft.startsWith("Or")) {
+                sql.append(" or ");
+                methodNameLeft = methodNameLeft.substring(2);
+            }
+        }
+        return sql.toString();
+    }
 }
