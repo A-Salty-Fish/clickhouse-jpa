@@ -1,4 +1,4 @@
-package asalty.fish.clickhousejpa.CRUDStatementHandler;
+package asalty.fish.clickhousejpa.CRUDStatementHandler.handler;
 
 import java.lang.reflect.Method;
 

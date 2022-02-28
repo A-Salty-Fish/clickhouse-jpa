@@ -1,4 +1,4 @@
-package asalty.fish.clickhousejpa.CRUDStatementHandler;
+package asalty.fish.clickhousejpa.CRUDStatementHandler.handler;
 
 import org.springframework.stereotype.Service;
 

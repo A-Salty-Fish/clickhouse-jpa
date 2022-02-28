@@ -1,4 +1,4 @@
-package asalty.fish.clickhousejpa.CRUDStatementHandler;
+package asalty.fish.clickhousejpa.CRUDStatementHandler.handler;
 
 import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
 import asalty.fish.clickhousejpa.mapper.ClickHouseMapper;
