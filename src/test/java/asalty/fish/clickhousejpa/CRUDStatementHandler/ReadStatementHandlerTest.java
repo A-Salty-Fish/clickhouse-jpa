@@ -32,4 +32,10 @@ public class ReadStatementHandlerTest {
     public void testGetFindAllSqlFromMethodName() throws Exception {
         System.out.println(readStatementHandler.getFindAllSqlFromMethodName(hits_v1.class, "findAllBy1And2Or3And4Or5And6"));
     }
+
+    @Test
+    public void testPrepareFindAllSQL() throws Exception {
+        System.out.println(readStatementHandler.prepareFindAllSQL(hits_v1.class, "findAllBy1And2Or3And4Or5And6",
+                new String[]{"1", "2", "3", "4", "5", "6"}));
+    }
 }

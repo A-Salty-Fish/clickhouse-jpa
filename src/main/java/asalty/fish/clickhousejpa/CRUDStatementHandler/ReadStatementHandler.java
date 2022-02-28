@@ -83,4 +83,12 @@ public class ReadStatementHandler {
         }
         return sql.toString();
     }
+
+    public String prepareFindAllSQL(Class<?> clazz, String methodName, String[] args) throws Exception {
+        StringBuilder sql = new StringBuilder(getFindAllSqlFromMethodName(clazz, methodName));
+        for (String arg : args) {
+            sql.replace(sql.indexOf("?"), sql.indexOf("?") + 1, arg);
+        }
+        return sql.toString();
+    }
 }
