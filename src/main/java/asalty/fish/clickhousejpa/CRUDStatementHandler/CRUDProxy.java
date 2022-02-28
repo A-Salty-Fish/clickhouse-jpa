@@ -1,6 +1,5 @@
 package asalty.fish.clickhousejpa.CRUDStatementHandler;
 
-import asalty.fish.clickhousejpa.CRUDStatementHandler.statementHandler.StatementHandler;
 import net.sf.cglib.proxy.Enhancer;
 import org.springframework.stereotype.Service;
 

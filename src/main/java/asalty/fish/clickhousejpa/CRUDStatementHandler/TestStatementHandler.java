@@ -1,6 +1,5 @@
 package asalty.fish.clickhousejpa.CRUDStatementHandler;
 
-import asalty.fish.clickhousejpa.CRUDStatementHandler.statementHandler.StatementHandler;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;

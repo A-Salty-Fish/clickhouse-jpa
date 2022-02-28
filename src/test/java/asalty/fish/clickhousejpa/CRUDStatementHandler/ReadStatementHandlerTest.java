@@ -1,6 +1,5 @@
 package asalty.fish.clickhousejpa.CRUDStatementHandler;
 
-import asalty.fish.clickhousejpa.CRUDStatementHandler.Find.ReadStatementHandler;
 import asalty.fish.clickhousejpa.example.dao.HitsV1Dao;
 import asalty.fish.clickhousejpa.example.entity.hits_v1;
 import com.google.gson.Gson;
@@ -53,5 +52,6 @@ public class ReadStatementHandlerTest {
     @Test
     public void testCRUDPorxy() {
         System.out.println(hitsV1Dao.testHandler("4944118417295196513"));
+        System.out.println(hitsV1Dao.findAllByWatchID(Long.valueOf("4944118417295196513")));
     }
 }

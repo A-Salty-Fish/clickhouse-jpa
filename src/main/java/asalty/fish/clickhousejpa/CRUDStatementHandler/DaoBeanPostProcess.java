@@ -1,6 +1,5 @@
 package asalty.fish.clickhousejpa.CRUDStatementHandler;
 
-import asalty.fish.clickhousejpa.CRUDStatementHandler.statementHandler.StatementHandler;
 import asalty.fish.clickhousejpa.annotation.ClickHouseRepository;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
