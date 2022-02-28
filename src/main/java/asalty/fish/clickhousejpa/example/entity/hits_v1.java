@@ -1,5 +1,6 @@
 package asalty.fish.clickhousejpa.example.entity;
 
+import asalty.fish.clickhousejpa.annotation.ClickHouseColumn;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +22,9 @@ public class hits_v1 {
     public String GoodEvent;
 
     public Integer UserAgentMajor;
+
+    @ClickHouseColumn(name = "URLDomain")
+    public String testUserDefinedColumn;
 
     public hits_v1() {
 

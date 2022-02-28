@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * @author 13090
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ClickHouseColumn {
     String name() default "";

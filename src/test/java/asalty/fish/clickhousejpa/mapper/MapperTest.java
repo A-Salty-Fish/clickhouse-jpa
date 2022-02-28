@@ -28,7 +28,7 @@ public class MapperTest {
     @Test
     public void testMapper() throws Exception {
         try {
-            ResultSet rs = clickHouseStatement.executeQuery("select * from tutorial.hits_v1 limit 2");
+            ResultSet rs = clickHouseStatement.executeQuery("select * from tutorial.hits_v1 limit 10");
             List<hits_v1> list = clickHouseMapper.convertResultSetToList(rs, hits_v1.class);
             System.out.println(new Gson().toJson(list));
         } catch (Exception e) {

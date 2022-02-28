@@ -1,5 +1,6 @@
 package asalty.fish.clickhousejpa.mapper;
 
+import asalty.fish.clickhousejpa.annotation.ClickHouseColumn;
 import org.springframework.context.annotation.Configuration;
 
 import java.lang.reflect.Field;
@@ -53,9 +54,15 @@ public class ClickHouseMapper {
         try {
             T t = clazz.newInstance();
             for (Field field : clazz.getDeclaredFields()) {
+                ClickHouseColumn clickHouseColumn = field.getAnnotation(ClickHouseColumn.class);
+                String fieldName = field.getName();
                 String columnName = field.getName();
-                Integer columnIndex =getColumnIndex(tableName, columnName);
-                String methodName = "set" + columnName.substring(0, 1).toUpperCase() + columnName.substring(1);
+                // 尝试拿出用户自定义的表列名
+                if (clickHouseColumn != null) {
+                    columnName = clickHouseColumn.name();
+                }
+                Integer columnIndex = getColumnIndex(tableName, columnName);
+                String methodName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
                 Class<?> type = field.getType();
                 Method method = clazz.getMethod(methodName, type);
                 convertAndSetStringToOtherType(t, type, method, rs.getString(columnIndex));
