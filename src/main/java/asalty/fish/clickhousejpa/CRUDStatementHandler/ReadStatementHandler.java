@@ -2,6 +2,7 @@ package asalty.fish.clickhousejpa.CRUDStatementHandler;
 
 import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
 import asalty.fish.clickhousejpa.mapper.ClickHouseMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
@@ -20,6 +21,9 @@ public class ReadStatementHandler {
 
     String baseSQL = "select * from";
 
+    @Value("${spring.jpa.clickhouse.database}")
+    String database;
+
     @Resource
     Statement clickHouseStatement;
 
@@ -34,7 +38,7 @@ public class ReadStatementHandler {
         } else {
             tableName = clazz.getSimpleName().substring(0, 1).toLowerCase() + clazz.getSimpleName().substring(1);
         }
-        return baseSQL + " " + tableName;
+        return baseSQL + " " + database + "." + tableName;
     }
 
     public String limitSQL(Class<?> clazz) {
@@ -54,6 +58,7 @@ public class ReadStatementHandler {
 
     /**
      * 暂时只支持 and 和 or 懒得写其他的解析了
+     *
      * @param clazz
      * @param methodName
      * @return
