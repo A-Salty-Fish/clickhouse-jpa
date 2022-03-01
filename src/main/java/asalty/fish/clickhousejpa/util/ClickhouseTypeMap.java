@@ -24,7 +24,8 @@ public class ClickhouseTypeMap {
         javaTypeToClickhouseMap.put("Integer", "UInt32");
         javaTypeToClickhouseMap.put("Boolean", "UInt8");
         javaTypeToClickhouseMap.put("String", "String");
-        javaTypeToClickhouseMap.put("Date", "DateTime");
+        javaTypeToClickhouseMap.put("LocalDateTime", "DateTime");
+        javaTypeToClickhouseMap.put("LocalDate", "Date");
         javaTypeToClickhouseMap.put("Double", "Float64");
 
         javaTypeToClickhouseMap.forEach((k, v) -> {
