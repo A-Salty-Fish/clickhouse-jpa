@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +114,27 @@ public class TableCreate {
         // todo orderBy 暂时只支持order by 主键
         createTableSql.append(" ORDER BY " + getColumnName(primaryKeyFields.get(0)));
         return createTableSql.toString();
+    }
+
+    /**
+     * 判定是否需要创建表
+     * @param entity
+     * @return
+     */
+    public boolean needCreateTable(Class<?> entity){
+        if (!createTable) {
+            return false;
+        }
+        String testSql = "select * from " + getTableName(entity) + " limit 1";
+        try {
+            ResultSet resultSet =clickHouseStatement.executeQuery(testSql);
+        } catch (SQLException e) {
+//            e.printStackTrace();
+            if (e.getMessage().startsWith("DB::ExceptionDB::Exception: Table")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

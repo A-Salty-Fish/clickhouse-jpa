@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @ClickHouseEntity
-@ClickHouseTable(name = "hits_test", engine = ClickHouseEngine.MergeTree)
+@ClickHouseTable(name = "hits_v1", engine = ClickHouseEngine.MergeTree)
 public class hits_v1 {
 
     @ClickHouseColumn(isPrimaryKey = true)

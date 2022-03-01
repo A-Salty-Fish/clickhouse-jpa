@@ -24,4 +24,9 @@ public class testTableCreate {
     public void testTableCreate() throws TableCreateException, TypeNotSupportException {
         System.out.println(tableCreate.getCreateTableSql(hits_v1.class));
     }
+
+    @Test
+    public void testNeedCreate() throws TableCreateException {
+        System.out.println(tableCreate.needCreateTable(hits_v1.class));
+    }
 }
