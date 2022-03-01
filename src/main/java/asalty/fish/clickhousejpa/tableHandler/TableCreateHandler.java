@@ -88,7 +88,7 @@ public class TableCreateHandler {
             ClickHouseColumn clickHouseColumn = field.getAnnotation(ClickHouseColumn.class);
             createTableSql.append(" " + getColumnName(field) + " " +
                     ClickhouseTypeMap.getClickhouseType(field.getType().getSimpleName()) +
-                    ("".equals(getColumnComment(field)) ? " " : (" comment '" + getColumnComment(field)) + "'") +
+//                    ("".equals(getColumnComment(field)) ? " " : (" comment '" + getColumnComment(field)) + "'") +
                      ",");
             // 寻找主键和orderby字段
             if (clickHouseColumn != null && clickHouseColumn.isPrimaryKey()) {

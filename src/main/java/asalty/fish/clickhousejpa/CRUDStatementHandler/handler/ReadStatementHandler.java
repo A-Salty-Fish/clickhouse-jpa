@@ -37,7 +37,7 @@ public class ReadStatementHandler implements StatementHandler {
         if (clickHouseTable != null) {
             tableName = clickHouseTable.name();
         } else {
-            tableName = clazz.getSimpleName().substring(0, 1).toLowerCase() + clazz.getSimpleName().substring(1);
+            tableName = clazz.getSimpleName();
         }
         return baseSQL + " " + database + "." + tableName;
     }
