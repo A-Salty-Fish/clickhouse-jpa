@@ -9,6 +9,7 @@ spring:
       database: tutorial
       username: default
       password:
+      table-update: true
       hikari:
         # 连接池的最大连接数
         maximum-pool-size: 50
