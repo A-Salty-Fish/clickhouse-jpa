@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 public class testTableCreate {
 
     @Resource
-    TableCreate tableCreate;
+    TableCreateHandler tableCreate;
 
     @Test
     public void testGetCreateTableSql() throws TableCreateException, TypeNotSupportException {
@@ -34,5 +34,10 @@ public class testTableCreate {
     @Test
     public void testCreateTable() throws TableCreateException, TypeNotSupportException {
         tableCreate.createTable(CreateTableTestEntity.class);
+    }
+
+    @Test
+    public void testAutoCreateTable() throws TableCreateException {
+
     }
 }

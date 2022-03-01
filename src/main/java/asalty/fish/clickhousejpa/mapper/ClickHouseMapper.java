@@ -86,6 +86,7 @@ public class ClickHouseMapper {
             } else if (type == Boolean.class) {
                 method.invoke(t, Boolean.valueOf(value));
             }
+            // todo 支持其他类型
         } catch (Exception e) {
             e.printStackTrace();
         }
