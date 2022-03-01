@@ -1,5 +1,6 @@
 package asalty.fish.clickhousejpa.tableHandler;
 
+import asalty.fish.clickhousejpa.example.entity.CreateTableTestEntity;
 import asalty.fish.clickhousejpa.example.entity.hits_v1;
 import asalty.fish.clickhousejpa.exception.TableCreateException;
 import asalty.fish.clickhousejpa.exception.TypeNotSupportException;
@@ -21,12 +22,17 @@ public class testTableCreate {
     TableCreate tableCreate;
 
     @Test
-    public void testTableCreate() throws TableCreateException, TypeNotSupportException {
+    public void testGetCreateTableSql() throws TableCreateException, TypeNotSupportException {
         System.out.println(tableCreate.getCreateTableSql(hits_v1.class));
     }
 
     @Test
     public void testNeedCreate() throws TableCreateException {
         System.out.println(tableCreate.needCreateTable(hits_v1.class));
+    }
+
+    @Test
+    public void testCreateTable() throws TableCreateException, TypeNotSupportException {
+        tableCreate.createTable(CreateTableTestEntity.class);
     }
 }

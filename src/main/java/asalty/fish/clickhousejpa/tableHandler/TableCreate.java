@@ -5,6 +5,7 @@ import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
 import asalty.fish.clickhousejpa.exception.TableCreateException;
 import asalty.fish.clickhousejpa.exception.TypeNotSupportException;
 import asalty.fish.clickhousejpa.util.ClickhouseTypeMap;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.util.List;
  * @date 2022/2/28 21:02
  */
 @Service
+@Slf4j
 public class TableCreate {
 
     @Value("${spring.jpa.clickhouse.table-update}")
@@ -142,7 +144,19 @@ public class TableCreate {
      * @param entity
      * @return
      */
-    public String createTable(Class<?> entity) {
-        return null;
+    public void createTable(Class<?> entity) throws TypeNotSupportException, TableCreateException {
+        if (needCreateTable(entity)) {
+            String createTableSql = getCreateTableSql(entity);
+            log.info(getTableName(entity) + " createTableSql: " + createTableSql);
+            try {
+                clickHouseStatement.executeQuery(createTableSql);
+                log.info(getTableName(entity) + "create success");
+            } catch (SQLException e) {
+                log.info(getTableName(entity) + "create failed");
+                e.printStackTrace();
+            }
+        } else {
+            log.info(getTableName(entity) + " already exists.");
+        }
     }
 }
