@@ -58,7 +58,7 @@ public class ClickHouseMapper {
                 String fieldName = field.getName();
                 String columnName = field.getName();
                 // 尝试拿出用户自定义的表列名
-                if (clickHouseColumn != null) {
+                if (clickHouseColumn != null && clickHouseColumn.name() != null && !"".equals(clickHouseColumn.name())) {
                     columnName = clickHouseColumn.name();
                 }
                 Integer columnIndex = getColumnIndex(tableName, columnName);

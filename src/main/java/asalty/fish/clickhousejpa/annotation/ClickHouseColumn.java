@@ -14,4 +14,8 @@ public @interface ClickHouseColumn {
     String name() default "";
 
     String comment() default "";
+
+    boolean isPrimaryKey() default false;
+
+    boolean isOrderBy() default false;
 }

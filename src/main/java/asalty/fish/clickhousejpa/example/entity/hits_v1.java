@@ -1,6 +1,9 @@
 package asalty.fish.clickhousejpa.example.entity;
 
 import asalty.fish.clickhousejpa.annotation.ClickHouseColumn;
+import asalty.fish.clickhousejpa.annotation.ClickHouseEngine;
+import asalty.fish.clickhousejpa.annotation.ClickHouseEntity;
+import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,12 +14,19 @@ import lombok.NoArgsConstructor;
  * @date 2022/2/28 14:46
  */
 @Data
+@ClickHouseEntity
+@ClickHouseTable(name = "hits_test", engine = ClickHouseEngine.MergeTree)
 public class hits_v1 {
 
+    @ClickHouseColumn(isPrimaryKey = true)
+    public Long id;
+
+    @ClickHouseColumn(comment = "观看id")
     public Long WatchID;
 
-    public boolean JavaEnable;
+    public Boolean JavaEnable;
 
+    @ClickHouseColumn(comment = "标题")
     public String Title;
 
     public String GoodEvent;

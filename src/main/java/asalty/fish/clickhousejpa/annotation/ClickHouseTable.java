@@ -21,5 +21,7 @@ public @interface ClickHouseTable {
      * @return other table information
      */
     String otherInfo() default "";
+
+    ClickHouseEngine engine() default ClickHouseEngine.MergeTree;
 }
 
