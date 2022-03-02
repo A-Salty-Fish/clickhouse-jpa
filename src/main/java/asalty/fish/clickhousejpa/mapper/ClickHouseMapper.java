@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -99,6 +100,36 @@ public class ClickHouseMapper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 将java类型转换为clickhouse支持的字符串
+     * @param target
+     * @param field
+     * @return
+     * @throws IllegalAccessException
+     * @throws TypeNotSupportException
+     */
+    public String convertTypeToString(Object target, Field field) throws IllegalAccessException, TypeNotSupportException {
+        String value;
+        if (field.getType().equals(String.class)) {
+            value = "'" + field.get(target).toString() + "'";
+        } else if (field.getType().equals(Boolean.class)) {
+            value = "" + ((Boolean) field.get(target) ? "1" : "0");
+        } else if (field.getType().equals(LocalDateTime.class)) {
+            value = "'" + ((LocalDateTime) field.get(target)).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "'";
+        } else if (field.getType().equals(LocalDate.class)) {
+            value = "'" + ((LocalDate) field.get(target)).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "'";
+        } else if (field.getType().equals(Long.class)) {
+            value = "" + field.get(target);
+        } else if (field.getType().equals(Double.class)) {
+            value = "" + field.get(target);
+        } else if (field.getType().equals(Integer.class)) {
+            value = "" + field.get(target);
+        } else {
+            throw new TypeNotSupportException("type not support: " + field.getType().getSimpleName());
+        }
+        return value;
     }
 
     public <T> List<T> convertResultSetToList(ResultSet rs, Class<T> clazz) {
