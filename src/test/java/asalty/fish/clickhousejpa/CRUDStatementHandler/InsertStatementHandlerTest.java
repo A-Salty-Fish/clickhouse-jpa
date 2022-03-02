@@ -1,6 +1,7 @@
 package asalty.fish.clickhousejpa.CRUDStatementHandler;
 
 import asalty.fish.clickhousejpa.CRUDStatementHandler.handler.InsertStatementHandler;
+import asalty.fish.clickhousejpa.example.dao.CreateTableTestEntityDao;
 import asalty.fish.clickhousejpa.example.entity.CreateTableTestEntity;
 import asalty.fish.clickhousejpa.example.entity.hits_v1;
 import com.alibaba.fastjson.JSON;
@@ -44,5 +45,15 @@ public class InsertStatementHandlerTest {
         System.out.println(insertStatementHandler.resultHandler(
                 insertStatementHandler.getInsertSql(CreateTableTestEntity.class, getTestEntity()), CreateTableTestEntity.class));
 
+    }
+
+    @Resource
+    CreateTableTestEntityDao createTableTestEntityDao;
+
+    @Test
+    public void testPostProcess() throws Exception {
+        System.out.println(createTableTestEntityDao.create(getTestEntity()));
+        System.out.println(createTableTestEntityDao.create(getTestEntity()));
+        System.out.println(new Gson().toJson(createTableTestEntityDao.findAllByWatchID(getTestEntity().getWatchID())));
     }
 }
