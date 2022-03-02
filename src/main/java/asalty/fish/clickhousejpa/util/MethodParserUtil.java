@@ -1,5 +1,6 @@
 package asalty.fish.clickhousejpa.util;
 
+import asalty.fish.clickhousejpa.exception.TypeNotSupportException;
 import asalty.fish.clickhousejpa.mapper.ClickHouseMapper;
 
 import java.lang.reflect.Method;
@@ -33,14 +34,11 @@ public class MethodParserUtil {
         return sql.toString();
     }
 
-    public static String prepareSqlArgs(String rowSql, Object[] args, Method method) {
+    public static String prepareSqlArgs(String rowSql, Object[] args, Method method) throws TypeNotSupportException {
         StringBuilder sql = new StringBuilder(rowSql);
         Class<?>[] parameterTypes = method.getParameterTypes();
         for (int i = 0; i < args.length; i++) {
-
-        }
-        for (Object arg : args) {
-            sql.replace(sql.indexOf("?"), sql.indexOf("?") + 1, arg.toString());
+            sql.replace(sql.indexOf("?"), sql.indexOf("?") + 1, ClickhouseTypeMap.convertTypeToString(args[i], parameterTypes[i]));
         }
         return sql.toString();
     }

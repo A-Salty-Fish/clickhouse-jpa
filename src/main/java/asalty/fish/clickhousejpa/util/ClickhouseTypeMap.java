@@ -110,5 +110,25 @@ public class ClickhouseTypeMap {
         return value;
     }
 
-
+    public static String convertTypeToString(Object target, Class<?> type) throws TypeNotSupportException {
+        String value;
+        if (type.equals(String.class)) {
+            value = "'" + target.toString() + "'";
+        } else if (type.equals(Boolean.class)) {
+            value = "" + ((Boolean) target ? "1" : "0");
+        } else if (type.equals(LocalDateTime.class)) {
+            value = "'" + ((LocalDateTime) target).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "'";
+        } else if (type.equals(LocalDate.class)) {
+            value = "'" + ((LocalDate) target).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "'";
+        } else if (type.equals(Long.class)) {
+            value = "" + target;
+        } else if (type.equals(Double.class)) {
+            value = "" + target;
+        } else if (type.equals(Integer.class)) {
+            value = "" + target;
+        } else {
+            throw new TypeNotSupportException("type not support: " + type.getSimpleName());
+        }
+        return value;
+    }
 }
