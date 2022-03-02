@@ -12,7 +12,8 @@ import java.util.HashMap;
 /**
  * @author 13090
  * @version 1.0
- * @description: TODO
+ * @description: 类型映射库 主要用于获取类型的映射
+ * todo 以后再重构
  * @date 2022/3/1 13:05
  */
 
@@ -56,6 +57,27 @@ public class ClickhouseTypeMap {
     /**
      * 将 clichouse 返回的 string 值转换为对应的类型并填入目标对象
      */
+    @SuppressWarnings("unchecked")
+    public static <T> T convertStringToOtherType(Class<T> type, String value) throws TypeNotSupportException {
+        if (type == String.class) {
+            return (T) value;
+        } else if (type == Long.class) {
+            return (T) Long.valueOf(value);
+        } else if (type == Boolean.class) {
+            return (T) Boolean.valueOf(value);
+        } else if (type == Integer.class) {
+            return (T) Integer.valueOf(value);
+        } else if (type == Double.class) {
+            return (T) Double.valueOf(value);
+        } else if (type == LocalDateTime.class) {
+            return (T) LocalDateTime.parse(value, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        } else if (type == LocalDate.class) {
+            return (T) LocalDate.parse(value, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        } else {
+            throw new TypeNotSupportException("type not support:" + type.getSimpleName());
+        }
+    }
+
     public static void convertAndSetStringToOtherType(Object t, Class<?> type, Method method, String value) {
         try {
             if (type == String.class) {

@@ -31,4 +31,10 @@ public class StatisticsStatementHandlerTest {
     public void testStatementHandler() throws Exception {
         System.out.println(statisticsStatementHandler.getStatement(CreateTableTestEntityDao.class.getMethod("countWatchIDByWatchIDAndTitle", Long.class, String.class), new Object[]{1L, "testttt"}, CreateTableTestEntity.class));
     }
+
+    @Test
+    public void testStatementDao() throws Exception {
+        System.out.println(createTableTestEntityDao.countWatchIDByWatchID(1L));
+        System.out.println(createTableTestEntityDao.countWatchIDByWatchIDAndTitle(1L, "title"));
+    }
 }
