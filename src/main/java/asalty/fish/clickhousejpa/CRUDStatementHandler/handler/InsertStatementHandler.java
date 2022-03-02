@@ -3,10 +3,14 @@ package asalty.fish.clickhousejpa.CRUDStatementHandler.handler;
 import asalty.fish.clickhousejpa.annotation.ClickHouseColumn;
 import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
 import asalty.fish.clickhousejpa.util.AnnotationUtil;
+import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 /**
  * @author 13090
@@ -21,6 +25,9 @@ public class InsertStatementHandler implements StatementHandler {
     public boolean needHandle(Method method) {
         return "create".equals(method.getName());
     }
+
+    @Resource
+    Statement clickHouseStatement;
 
     /**
      * 获取插入实体的sql
@@ -67,6 +74,12 @@ public class InsertStatementHandler implements StatementHandler {
 
     @Override
     public Object resultHandler(String sql, Class<?> entity) throws Exception {
-        return null;
+        try {
+            clickHouseStatement.executeQuery(sql);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
