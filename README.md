@@ -4,9 +4,38 @@
 但是spring data jpa不支持clickhouse，（拒绝mybatis的xml）  
 只能自己写一个风格类似的先凑合用了。（以后有空再写个jpa规范版）
 
+## 安装方法（还在申请maven仓库，所以暂时只能本地安装）
+1. clone本仓库
+2. 在本地执行 mvn clean install
+
 ## 使用方法
 
 1. 添加依赖
+```xml
+        <dependency>
+            <groupId>asalty.fish</groupId>
+            <artifactId>clickhouse-jpa</artifactId>
+            <version>1.0.0-release</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.housepower</groupId>
+            <artifactId>clickhouse-native-jdbc</artifactId>
+            <version>2.6.4</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+        <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>4.0.3</version>
+        </dependency>
+ ```
 2. 填写配置文件
 ```yaml
 spring:
