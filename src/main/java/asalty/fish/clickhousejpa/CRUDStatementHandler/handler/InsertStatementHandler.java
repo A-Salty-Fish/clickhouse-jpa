@@ -2,6 +2,7 @@ package asalty.fish.clickhousejpa.CRUDStatementHandler.handler;
 
 import asalty.fish.clickhousejpa.annotation.ClickHouseColumn;
 import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
+import asalty.fish.clickhousejpa.util.AnnotationUtil;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -21,22 +22,6 @@ public class InsertStatementHandler implements StatementHandler {
         return "create".equals(method.getName());
     }
 
-    public String getTableName(Class<?> entity) {
-        if (entity.isAnnotationPresent(ClickHouseTable.class) && !"".equals(entity.getAnnotation(ClickHouseTable.class).name())) {
-            return entity.getAnnotation(ClickHouseTable.class).name();
-        } else {
-            return entity.getSimpleName();
-        }
-    }
-
-    public String getColumnName(Field field) {
-        if (field.isAnnotationPresent(ClickHouseColumn.class) && !"".equals(field.getAnnotation(ClickHouseColumn.class).name())) {
-            return field.getAnnotation(ClickHouseColumn.class).name();
-        } else {
-            return field.getName();
-        }
-    }
-
     /**
      * 获取插入实体的sql
      *
@@ -45,10 +30,10 @@ public class InsertStatementHandler implements StatementHandler {
      * @throws Exception
      */
     public String getInsertSql(Class<?> entity, Object target) throws Exception {
-        String tableName = getTableName(entity);
+        String tableName = AnnotationUtil.getTableName(entity);
         StringBuilder insertSql = new StringBuilder("INSERT INTO ").append(tableName).append("( ");
         for (Field field : entity.getDeclaredFields()) {
-            String columnName = getColumnName(field);
+            String columnName = AnnotationUtil.getColumnName(field);
             insertSql.append(columnName).append(", ");
         }
         insertSql.delete(insertSql.length() - 2, insertSql.length());

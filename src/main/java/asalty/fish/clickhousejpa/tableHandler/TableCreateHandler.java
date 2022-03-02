@@ -5,6 +5,7 @@ import asalty.fish.clickhousejpa.annotation.ClickHouseColumn;
 import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
 import asalty.fish.clickhousejpa.exception.TableCreateException;
 import asalty.fish.clickhousejpa.exception.TypeNotSupportException;
+import asalty.fish.clickhousejpa.util.AnnotationUtil;
 import asalty.fish.clickhousejpa.util.ClickhouseTypeMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,48 +37,13 @@ public class TableCreateHandler {
     Statement clickHouseStatement;
 
     /**
-     * 获取表名
-     * @param entity
-     * @return
-     */
-    public String getTableName(Class<?> entity) {
-        ClickHouseTable clickHouseTable = entity.getAnnotation(ClickHouseTable.class);
-        String tableName;
-        if (clickHouseTable == null) {
-            tableName = entity.getSimpleName();
-        } else {
-            tableName = clickHouseTable.name();
-        }
-        return tableName;
-    }
-
-    public String getColumnName(Field field) {
-        ClickHouseColumn clickHouseColumn = field.getAnnotation(ClickHouseColumn.class);
-        String columnName;
-        if (clickHouseColumn != null && !"".equals(clickHouseColumn.name())) {
-            columnName = clickHouseColumn.name();
-        } else {
-            columnName = field.getName();
-        }
-        return columnName;
-    }
-
-    public String getColumnComment(Field field) {
-        ClickHouseColumn clickHouseColumn = field.getAnnotation(ClickHouseColumn.class);
-        String comment = "";
-        if (clickHouseColumn != null && !"".equals(clickHouseColumn.comment())) {
-            comment = clickHouseColumn.comment();
-        }
-        return comment;
-    }
-    /**
      * 获取建表sql
      * @param entity
      * @return
      */
     public String getCreateTableSql(Class<?> entity) throws TableCreateException, TypeNotSupportException {
         StringBuilder createTableSql = new StringBuilder();
-        createTableSql.append("CREATE TABLE " + getTableName(entity) + "(");
+        createTableSql.append("CREATE TABLE " + AnnotationUtil.getTableName(entity) + "(");
         // 取得主键字段
         List<Field> primaryKeyFields = new ArrayList<>();
         // 取得orderby字段
@@ -86,7 +52,7 @@ public class TableCreateHandler {
         // 处理表字段
         for (Field field : entity.getDeclaredFields()) {
             ClickHouseColumn clickHouseColumn = field.getAnnotation(ClickHouseColumn.class);
-            createTableSql.append(" " + getColumnName(field) + " " +
+            createTableSql.append(" " + AnnotationUtil.getColumnName(field) + " " +
                     ClickhouseTypeMap.getClickhouseType(field.getType().getSimpleName()) +
 //                    ("".equals(getColumnComment(field)) ? " " : (" comment '" + getColumnComment(field)) + "'") +
                      ",");
@@ -110,13 +76,13 @@ public class TableCreateHandler {
             }
             createTableSql.append(" PRIMARY KEY ");
             for (Field field : primaryKeyFields) {
-                createTableSql.append(getColumnName(field) + " ");
+                createTableSql.append(AnnotationUtil.getColumnName(field) + " ");
             }
         } else {
             throw new TableCreateException("没有主键字段");
         }
         // todo orderBy 暂时只支持order by 主键
-        createTableSql.append(" ORDER BY " + getColumnName(primaryKeyFields.get(0)));
+        createTableSql.append(" ORDER BY " + AnnotationUtil.getColumnName(primaryKeyFields.get(0)));
         return createTableSql.toString();
     }
 
@@ -129,7 +95,7 @@ public class TableCreateHandler {
         if (!createTable) {
             return false;
         }
-        String testSql = "select * from " + getTableName(entity) + " limit 1";
+        String testSql = "select * from " + AnnotationUtil.getTableName(entity) + " limit 1";
         try {
             ResultSet resultSet =clickHouseStatement.executeQuery(testSql);
         } catch (SQLException e) {
@@ -149,16 +115,16 @@ public class TableCreateHandler {
     public void createTable(Class<?> entity) throws TypeNotSupportException, TableCreateException {
         if (needCreateTable(entity)) {
             String createTableSql = getCreateTableSql(entity);
-            log.info(getTableName(entity) + " createTableSql: " + createTableSql);
+            log.info(AnnotationUtil.getTableName(entity) + " createTableSql: " + createTableSql);
             try {
                 clickHouseStatement.executeQuery(createTableSql);
-                log.info(getTableName(entity) + "create success");
+                log.info(AnnotationUtil.getTableName(entity) + "create success");
             } catch (SQLException e) {
-                log.info(getTableName(entity) + "create failed");
+                log.info(AnnotationUtil.getTableName(entity) + "create failed");
                 e.printStackTrace();
             }
         } else {
-            log.info(getTableName(entity) + " already exists.");
+            log.info(AnnotationUtil.getTableName(entity) + " already exists.");
         }
     }
 }

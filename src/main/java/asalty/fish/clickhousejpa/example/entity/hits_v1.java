@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @ClickHouseEntity
-@ClickHouseTable(name = "hits_v3", engine = ClickHouseEngine.MergeTree)
+@ClickHouseTable(name = "hits_v1", engine = ClickHouseEngine.MergeTree)
 public class hits_v1 {
 
-    @ClickHouseColumn(isPrimaryKey = true)
-    public Long id;
+//    @ClickHouseColumn(isPrimaryKey = true)
+//    public Long id;
 
     @ClickHouseColumn(comment = "观看id")
     public Long WatchID;
