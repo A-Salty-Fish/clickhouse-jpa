@@ -1,7 +1,5 @@
 package asalty.fish.clickhousejpa.util;
 
-import asalty.fish.clickhousejpa.ClickhouseJpaApplication;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -209,11 +207,11 @@ public class ClassScanUtil {
 
     /**
      * 拿到springboot主类下的所有含某个注解的类
-     * @param springbootApplicationClass
+//     * @param springbootApplicationClass
      * @param annotation
      * @return
      */
     public static List<Class<?>> getAllClassesWithAnnotation(Object springbootApplication, Class<? extends Annotation> annotation) {
-        return getAllClassByPackageName(ClickhouseJpaApplication.class.getPackage()).stream().filter(clazz -> clazz.isAnnotationPresent(annotation)).collect(Collectors.toList());
+        return getAllClassByPackageName(springbootApplication.getClass().getPackage()).stream().filter(clazz -> clazz.isAnnotationPresent(annotation)).collect(Collectors.toList());
     }
 }

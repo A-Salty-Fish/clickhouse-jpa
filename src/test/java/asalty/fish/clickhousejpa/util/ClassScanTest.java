@@ -1,6 +1,5 @@
 package asalty.fish.clickhousejpa.util;
 
-import asalty.fish.clickhousejpa.ClickhouseJpaApplication;
 import asalty.fish.clickhousejpa.annotation.ClickHouseEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,9 +28,9 @@ public class ClassScanTest {
 
     @Test
     public void testScanSpringboot() throws Exception {
-        System.out.println(applicationContext.getClass().getPackage().getName());
-        List<Class<?>> classes = ClassScanUtil.getAllClassByPackageName(ClickhouseJpaApplication.class.getPackage());
-        classes.forEach(System.out::println);
+//        System.out.println(applicationContext.getClass().getPackage().getName());
+//        List<Class<?>> classes = ClassScanUtil.getAllClassByPackageName(ClickhouseJpaApplication.class.getPackage());
+//        classes.forEach(System.out::println);
     }
 
     @Test

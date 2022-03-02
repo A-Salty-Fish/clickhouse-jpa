@@ -1,6 +1,5 @@
 package asalty.fish.clickhousejpa.tableHandler;
 
-import asalty.fish.clickhousejpa.ClickhouseJpaApplication;
 import asalty.fish.clickhousejpa.annotation.ClickHouseColumn;
 import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
 import asalty.fish.clickhousejpa.exception.TableCreateException;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;

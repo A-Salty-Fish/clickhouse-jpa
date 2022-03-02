@@ -4,6 +4,7 @@ import asalty.fish.clickhousejpa.annotation.ClickHouseEntity;
 import asalty.fish.clickhousejpa.exception.TableCreateException;
 import asalty.fish.clickhousejpa.exception.TypeNotSupportException;
 import asalty.fish.clickhousejpa.util.ClassScanUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -19,16 +20,17 @@ import java.util.List;
  */
 @Service
 public class TableBeanPostProcess {
-
-    @Resource
-    private ApplicationContext applicationContext;
+    @Autowired
+    private ApplicationContext context;
 
     @Resource
     TableCreateHandler tableCreateHandler;
 
     @PostConstruct
     public void tableHandle() throws TypeNotSupportException, TableCreateException {
-        List<Class<?>> entities = ClassScanUtil.getAllClassesWithAnnotation(applicationContext, ClickHouseEntity.class);
+        String[] springBootAppBeanName = context.getBeanNamesForAnnotation(org.springframework.boot.autoconfigure.SpringBootApplication.class);
+        Object springbootApplication = context.getBean(springBootAppBeanName[0]);
+        List<Class<?>> entities = ClassScanUtil.getAllClassesWithAnnotation(springbootApplication, ClickHouseEntity.class);
         for (Class<?> entity : entities) {
             tableCreateHandler.createTable(entity);
         }

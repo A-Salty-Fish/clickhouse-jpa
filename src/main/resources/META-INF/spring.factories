@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-asalty.fish.clickhousejpa.ClickhouseJpaApplication
+asalty.fish.clickhousejpa.ClickHouseJpaAutoConfiguration
