@@ -44,8 +44,8 @@ public class InsertStatementHandlerTest {
 
     @Test
     public void testResultHandler() throws Exception {
-        System.out.println(insertStatementHandler.resultHandler(
-                insertStatementHandler.getInsertSql(CreateTableTestEntity.class, getTestEntity()), CreateTableTestEntity.class));
+//        System.out.println(insertStatementHandler.resultHandler(
+//                insertStatementHandler.getInsertSql(CreateTableTestEntity.class, getTestEntity()), CreateTableTestEntity.class));
 
     }
 

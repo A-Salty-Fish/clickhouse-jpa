@@ -1,5 +1,6 @@
 package asalty.fish.clickhousejpa.example.dao;
 
+import asalty.fish.clickhousejpa.annotation.ClickHouseNativeQuery;
 import asalty.fish.clickhousejpa.annotation.ClickHouseRepository;
 import asalty.fish.clickhousejpa.example.entity.CreateTableTestEntity;
 
@@ -22,4 +23,8 @@ public class CreateTableTestEntityDao {
         return null;
     }
 
+    @ClickHouseNativeQuery("select count(*) from create_table_test_entity")
+    public Long countAll() {
+        return null;
+    }
 }

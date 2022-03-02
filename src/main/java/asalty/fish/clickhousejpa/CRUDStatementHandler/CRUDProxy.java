@@ -4,6 +4,8 @@ import asalty.fish.clickhousejpa.CRUDStatementHandler.handler.StatementHandler;
 import net.sf.cglib.proxy.Enhancer;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * @author 13090
  * @version 1.0
@@ -13,7 +15,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CRUDProxy{
 
-    CRUDInterceptor crudInterceptor = new CRUDInterceptor();
+    @Resource
+    CRUDInterceptor crudInterceptor;
 
     public void setStatementInterceptor(StatementHandler[] statementHandlers){
         this.crudInterceptor.setStatementInterceptor(statementHandlers);

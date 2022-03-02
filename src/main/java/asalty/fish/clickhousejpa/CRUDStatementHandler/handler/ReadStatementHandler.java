@@ -114,7 +114,7 @@ public class ReadStatementHandler implements StatementHandler {
     }
 
     @Override
-    public Object resultHandler(String sql, Class<?> entity) throws Exception {
+    public Object resultHandler(String sql, Class<?> entity, Method method) throws Exception {
         return clickHouseMapper.convertResultSetToList(clickHouseStatement.executeQuery(sql), entity);
     }
 }

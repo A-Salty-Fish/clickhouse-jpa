@@ -60,7 +60,7 @@ public class InsertStatementHandler implements StatementHandler {
     }
 
     @Override
-    public Object resultHandler(String sql, Class<?> entity) throws Exception {
+    public Object resultHandler(String sql, Class<?> entity, Method method) throws Exception {
         try {
             clickHouseStatement.executeQuery(sql);
             return true;

@@ -27,5 +27,5 @@ public interface StatementHandler {
     /**
      * 拦截后的sql的结果处理器
      */
-    public Object resultHandler(String sql, Class<?> entity) throws Exception;
+    public Object resultHandler(String sql, Class<?> entity, Method method) throws Exception;
 }

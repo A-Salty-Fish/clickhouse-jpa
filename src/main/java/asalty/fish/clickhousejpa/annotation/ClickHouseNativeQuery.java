@@ -8,8 +8,8 @@ import java.lang.annotation.Target;
 /**
  * @author 13090
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ClickHouseNativeQuery {
-    String value();
+    String value() default "";
 }
