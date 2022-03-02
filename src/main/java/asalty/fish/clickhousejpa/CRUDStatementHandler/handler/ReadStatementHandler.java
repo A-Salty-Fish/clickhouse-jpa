@@ -86,7 +86,7 @@ public class ReadStatementHandler implements StatementHandler {
     @Override
     public String getStatement(Method method, Object[] args, Class<?> entity) throws Exception {
         StringBuilder sql = new StringBuilder(getFindAllSqlFromMethodName(entity, method.getName()));
-        return MethodParserUtil.prepareSqlArgs(sql.toString(), args);
+        return MethodParserUtil.prepareSqlArgs(sql.toString(), args, method);
     }
 
     @Override

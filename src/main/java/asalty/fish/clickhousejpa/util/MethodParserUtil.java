@@ -2,6 +2,8 @@ package asalty.fish.clickhousejpa.util;
 
 import asalty.fish.clickhousejpa.mapper.ClickHouseMapper;
 
+import java.lang.reflect.Method;
+
 /**
  * @author 13090
  * @version 1.0
@@ -31,8 +33,12 @@ public class MethodParserUtil {
         return sql.toString();
     }
 
-    public static String prepareSqlArgs(String rowSql, Object[] args) {
+    public static String prepareSqlArgs(String rowSql, Object[] args, Method method) {
         StringBuilder sql = new StringBuilder(rowSql);
+        Class<?>[] parameterTypes = method.getParameterTypes();
+        for (int i = 0; i < args.length; i++) {
+
+        }
         for (Object arg : args) {
             sql.replace(sql.indexOf("?"), sql.indexOf("?") + 1, arg.toString());
         }

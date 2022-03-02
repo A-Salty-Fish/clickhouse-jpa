@@ -53,7 +53,7 @@ public class StatisticsStatementHandler implements StatementHandler{
                 }
             }
         }
-        return MethodParserUtil.prepareSqlArgs(sql.toString(), args);
+        return MethodParserUtil.prepareSqlArgs(sql.toString(), args, method);
     }
 
     @Override

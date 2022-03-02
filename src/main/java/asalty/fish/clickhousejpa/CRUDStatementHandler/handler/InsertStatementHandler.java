@@ -2,6 +2,7 @@ package asalty.fish.clickhousejpa.CRUDStatementHandler.handler;
 
 import asalty.fish.clickhousejpa.mapper.ClickHouseMapper;
 import asalty.fish.clickhousejpa.util.AnnotationUtil;
+import asalty.fish.clickhousejpa.util.ClickhouseTypeMap;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -46,7 +47,7 @@ public class InsertStatementHandler implements StatementHandler {
         insertSql.delete(insertSql.length() - 2, insertSql.length());
         insertSql.append(") FORMAT Values (");
         for (Field field : entity.getDeclaredFields()) {
-            String value = clickHouseMapper.convertTypeToString(target, field);
+            String value = ClickhouseTypeMap.convertTypeToString(target, field);
             insertSql.append(value).append(", ");
         }
         insertSql.delete(insertSql.length() - 2, insertSql.length());
