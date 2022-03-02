@@ -1,11 +1,14 @@
 package asalty.fish.clickhousejpa.mapper;
 
 import asalty.fish.clickhousejpa.annotation.ClickHouseColumn;
+import asalty.fish.clickhousejpa.exception.TypeNotSupportException;
 import org.springframework.context.annotation.Configuration;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,16 +78,22 @@ public class ClickHouseMapper {
     }
 
     /**
-     * 将 string 转换为对应的类型
+     * 将 clichouse 返回的 string 值转换为对应的类型
      */
     public void convertAndSetStringToOtherType(Object t, Class<?> type, Method method, String value) {
         try {
             if (type == String.class) {
                 method.invoke(t, value);
             } else if (type == Long.class) {
-                method.invoke(t, Long.valueOf(value));
+                method.invoke(t, Long.parseLong(value));
             } else if (type == Boolean.class) {
-                method.invoke(t, Boolean.valueOf(value));
+                method.invoke(t, Boolean.parseBoolean(value));
+            } else if (type == LocalDateTime.class) {
+                method.invoke(t, LocalDateTime.parse(value));
+            } else if (type == LocalDate.class) {
+                method.invoke(t, LocalDate.parse(value));
+            } else {
+                throw new TypeNotSupportException("type not support: " + type.getSimpleName());
             }
             // todo 支持其他类型
         } catch (Exception e) {

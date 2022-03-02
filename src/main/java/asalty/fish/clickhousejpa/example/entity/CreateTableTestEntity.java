@@ -14,6 +14,9 @@ import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 /**
  * @author 13090
  * @version 1.0
@@ -42,6 +45,10 @@ public class CreateTableTestEntity {
 
     @ClickHouseColumn(name = "URLDomain")
     public String testUserDefinedColumn;
+
+    public LocalDateTime CreateTime;
+
+    public LocalDate CreateDay;
 
     public CreateTableTestEntity() {
 

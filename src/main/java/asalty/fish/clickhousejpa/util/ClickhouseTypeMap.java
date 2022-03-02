@@ -2,6 +2,8 @@ package asalty.fish.clickhousejpa.util;
 
 import asalty.fish.clickhousejpa.exception.TypeNotSupportException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 /**
@@ -20,13 +22,13 @@ public class ClickhouseTypeMap {
      * 初始化类型映射
      */
     static {
-        javaTypeToClickhouseMap.put("Long", "UInt64");
-        javaTypeToClickhouseMap.put("Integer", "UInt32");
-        javaTypeToClickhouseMap.put("Boolean", "UInt8");
-        javaTypeToClickhouseMap.put("String", "String");
-        javaTypeToClickhouseMap.put("LocalDateTime", "DateTime");
-        javaTypeToClickhouseMap.put("LocalDate", "Date");
-        javaTypeToClickhouseMap.put("Double", "Float64");
+        javaTypeToClickhouseMap.put(Long.class.getSimpleName(), "UInt64");
+        javaTypeToClickhouseMap.put(Integer.class.getSimpleName(), "UInt32");
+        javaTypeToClickhouseMap.put(Boolean.class.getSimpleName(), "UInt8");
+        javaTypeToClickhouseMap.put(String.class.getSimpleName(), "String");
+        javaTypeToClickhouseMap.put(LocalDateTime.class.getSimpleName(), "DateTime");
+        javaTypeToClickhouseMap.put(LocalDate.class.getSimpleName(), "Date");
+        javaTypeToClickhouseMap.put(Double.class.getSimpleName(), "Float64");
 
         javaTypeToClickhouseMap.forEach((k, v) -> {
             clickhouseTypeToJavaMap.put(v, k);
