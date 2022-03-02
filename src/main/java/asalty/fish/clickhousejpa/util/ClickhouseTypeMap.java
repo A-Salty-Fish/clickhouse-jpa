@@ -49,4 +49,6 @@ public class ClickhouseTypeMap {
         }
         return clickhouseTypeToJavaMap.get(clickhouseType);
     }
+
+
 }

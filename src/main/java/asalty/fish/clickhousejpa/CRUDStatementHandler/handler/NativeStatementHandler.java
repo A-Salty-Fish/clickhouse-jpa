@@ -13,7 +13,7 @@ import java.sql.Statement;
 /**
  * @author 13090
  * @version 1.0
- * @description: TODO
+ * @description: 手写SQl语句处理器
  * @date 2022/3/2 15:07
  */
 @Service

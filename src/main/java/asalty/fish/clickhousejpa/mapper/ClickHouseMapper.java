@@ -81,7 +81,7 @@ public class ClickHouseMapper {
     /**
      * 将 clichouse 返回的 string 值转换为对应的类型
      */
-    public void convertAndSetStringToOtherType(Object t, Class<?> type, Method method, String value) {
+    public static void convertAndSetStringToOtherType(Object t, Class<?> type, Method method, String value) {
         try {
             if (type == String.class) {
                 method.invoke(t, value);
@@ -93,7 +93,9 @@ public class ClickHouseMapper {
                 method.invoke(t, LocalDateTime.parse(value));
             } else if (type == LocalDate.class) {
                 method.invoke(t, LocalDate.parse(value));
-            } else {
+            } else if (type == Integer.class) {
+                method.invoke(t, Integer.parseInt(value));
+            } else{
                 throw new TypeNotSupportException("type not support: " + type.getSimpleName());
             }
             // todo 支持其他类型
@@ -104,13 +106,14 @@ public class ClickHouseMapper {
 
     /**
      * 将java类型转换为clickhouse支持的字符串
+     *
      * @param target
      * @param field
      * @return
      * @throws IllegalAccessException
      * @throws TypeNotSupportException
      */
-    public String convertTypeToString(Object target, Field field) throws IllegalAccessException, TypeNotSupportException {
+    public static String convertTypeToString(Object target, Field field) throws IllegalAccessException, TypeNotSupportException {
         String value;
         if (field.getType().equals(String.class)) {
             value = "'" + field.get(target).toString() + "'";

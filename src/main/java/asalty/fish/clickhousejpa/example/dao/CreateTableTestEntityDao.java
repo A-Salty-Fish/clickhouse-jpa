@@ -27,4 +27,8 @@ public class CreateTableTestEntityDao {
     public Long countAll() {
         return null;
     }
+
+    public Long countWatchIDByWatchID(Long watchID) {
+        return null;
+    }
 }

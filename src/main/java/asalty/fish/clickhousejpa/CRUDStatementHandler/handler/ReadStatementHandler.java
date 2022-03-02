@@ -2,6 +2,7 @@ package asalty.fish.clickhousejpa.CRUDStatementHandler.handler;
 
 import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
 import asalty.fish.clickhousejpa.mapper.ClickHouseMapper;
+import asalty.fish.clickhousejpa.util.MethodParserUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -72,31 +73,10 @@ public class ReadStatementHandler implements StatementHandler {
         }
         String methodNameLeft = methodName.substring(9);
         StringBuilder sql = new StringBuilder(databaseSQL(clazz));
-        if (methodNameLeft.length() > 0) {
-            sql.append(" where ");
-        }
-        String[] methodNameLeftSplit = methodNameLeft.split("And|Or");
-        for (String methodNameLeftSplitItem : methodNameLeftSplit) {
-            sql.append(methodNameLeftSplitItem + " = ?");
-            methodNameLeft = methodNameLeft.substring(methodNameLeftSplitItem.length());
-            if (methodNameLeft.startsWith("And")) {
-                sql.append(" and ");
-                methodNameLeft = methodNameLeft.substring(3);
-            } else if (methodNameLeft.startsWith("Or")) {
-                sql.append(" or ");
-                methodNameLeft = methodNameLeft.substring(2);
-            }
-        }
+        sql.append(MethodParserUtil.getConditionalSql(methodNameLeft));
         return sql.toString();
     }
 
-    public String prepareFindAllSQL(Class<?> clazz, String methodName, String[] args) throws Exception {
-        StringBuilder sql = new StringBuilder(getFindAllSqlFromMethodName(clazz, methodName));
-        for (String arg : args) {
-            sql.replace(sql.indexOf("?"), sql.indexOf("?") + 1, arg);
-        }
-        return sql.toString();
-    }
 
     @Override
     public boolean needHandle(Method method) {
@@ -105,12 +85,8 @@ public class ReadStatementHandler implements StatementHandler {
 
     @Override
     public String getStatement(Method method, Object[] args, Class<?> entity) throws Exception {
-        String[] sqlArgs = new String[args.length];
-        for (int i = 0; i < args.length; i++) {
-            sqlArgs[i] = args[i].toString();
-        }
-        String sql = prepareFindAllSQL(entity, method.getName(), sqlArgs);
-        return sql;
+        StringBuilder sql = new StringBuilder(getFindAllSqlFromMethodName(entity, method.getName()));
+        return MethodParserUtil.prepareSqlArgs(sql.toString(), args);
     }
 
     @Override
