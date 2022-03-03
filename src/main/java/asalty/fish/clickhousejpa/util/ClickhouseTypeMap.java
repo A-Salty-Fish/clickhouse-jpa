@@ -87,9 +87,14 @@ public class ClickhouseTypeMap {
             } else if (type == Boolean.class) {
                 method.invoke(t, Boolean.parseBoolean(value));
             } else if (type == LocalDateTime.class) {
-                method.invoke(t, LocalDateTime.parse(value));
+                // 去除时区信息
+                if (value.indexOf("+") > 0) {
+                    value = value.substring(0, value.indexOf("+"));
+                }
+                value = value.replace("T", " ");
+                method.invoke(t, LocalDateTime.parse(value, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             } else if (type == LocalDate.class) {
-                method.invoke(t, LocalDate.parse(value));
+                method.invoke(t, LocalDate.parse(value, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             } else if (type == Integer.class) {
                 method.invoke(t, Integer.parseInt(value));
             } else{
