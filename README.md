@@ -58,11 +58,11 @@ spring:
       # 连接池配置
       hikari:
         # 连接池的最大连接数
-        maximum-pool-size: 10
+        maximumPoolSize: 60
         # 空闲超时
         idleTimeout: 1000000
         # 连接超时时间
-        connection-timeout: 5000
+        connectionTimeout: 5000
 ```
 3. 新建一个实体类（若开启自动建表，会在容器启动时自动创建该实体对应的表）
 ```java
@@ -159,3 +159,5 @@ javaTypeToClickhouseMap.put(LocalDate.class.getSimpleName(), "Date");
 javaTypeToClickhouseMap.put(Double.class.getSimpleName(), "Float64");
 ```
 
+### v1.01
+修复每个线程不能单独拥有一个数据库连接的问题
