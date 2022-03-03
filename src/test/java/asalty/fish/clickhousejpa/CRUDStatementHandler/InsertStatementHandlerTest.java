@@ -37,10 +37,10 @@ public class InsertStatementHandlerTest {
         return h;
     }
 
-    @Test
-    public void testInsertSql() throws Exception {
-        System.out.println(insertStatementHandler.getInsertSql(CreateTableTestEntity.class,getTestEntity()));
-    }
+//    @Test
+//    public void testInsertSql() throws Exception {
+//        System.out.println(insertStatementHandler.getInsertSql(CreateTableTestEntity.class,getTestEntity()));
+//    }
 
     @Test
     public void testResultHandler() throws Exception {

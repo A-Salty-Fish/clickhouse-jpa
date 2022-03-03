@@ -41,6 +41,11 @@ public class StatisticsStatementHandler implements StatementHandler{
     }
 
     @Override
+    public String getRowStatement(Method method, Object[] args, Class<?> entity) throws Exception {
+        return null;
+    }
+
+    @Override
     public String getStatement(Method method, Object[] args, Class<?> entity) throws Exception {
         String tableName = AnnotationUtil.getTableName(entity);
         StringBuilder methodName = new StringBuilder(method.getName());

@@ -10,7 +10,7 @@
     </parent>
     <groupId>asalty.fish</groupId>
     <artifactId>clickhouse-jpa</artifactId>
-    <version>1.0.1-release</version>
+    <version>1.0.2-release</version>
     <name>clickhouse-jpa</name>
     <description>clickhouse-jpa</description>
     <properties>

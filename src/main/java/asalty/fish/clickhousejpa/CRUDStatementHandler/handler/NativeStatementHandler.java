@@ -48,6 +48,11 @@ public class NativeStatementHandler implements StatementHandler {
     }
 
     @Override
+    public String getRowStatement(Method method, Object[] args, Class<?> entity) throws Exception {
+        return null;
+    }
+
+    @Override
     public String getStatement(Method method, Object[] args, Class<?> entity) throws Exception {
         return getNativeSql(method, args);
     }
