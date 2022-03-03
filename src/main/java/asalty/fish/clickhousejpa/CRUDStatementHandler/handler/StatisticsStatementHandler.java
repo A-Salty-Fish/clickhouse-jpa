@@ -1,5 +1,6 @@
 package asalty.fish.clickhousejpa.CRUDStatementHandler.handler;
 
+import asalty.fish.clickhousejpa.jdbc.ClickHouseJdbcConfig;
 import asalty.fish.clickhousejpa.util.AnnotationUtil;
 import asalty.fish.clickhousejpa.util.ClickhouseTypeMap;
 import asalty.fish.clickhousejpa.util.MethodParserUtil;
@@ -23,7 +24,7 @@ public class StatisticsStatementHandler implements StatementHandler{
     static HashSet<String> statisticsMethods = new HashSet<>();
 
     @Resource
-    Statement clickHouseStatement;
+    ClickHouseJdbcConfig clickHouseJdbcConfig;
 
     static {
         statisticsMethods.add("count");
@@ -66,7 +67,7 @@ public class StatisticsStatementHandler implements StatementHandler{
 
     @Override
     public Object resultHandler(String sql, Class<?> entity, Method method) throws Exception {
-        ResultSet resultSet = clickHouseStatement.executeQuery(sql);
+        ResultSet resultSet = clickHouseJdbcConfig.threadLocalStatement().executeQuery(sql);
         resultSet.next();
         Class<?> returnType = method.getReturnType();
         return ClickhouseTypeMap.convertStringToOtherType(returnType, resultSet.getString(1));

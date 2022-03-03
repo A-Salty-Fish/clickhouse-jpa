@@ -48,17 +48,39 @@ public class ClickHouseJdbcConfig {
 
     private DataSource dataSource;
 
+    private ThreadLocal<Statement> statement = new ThreadLocal<>();
     @Resource
     HikariConfig hikariConfig;
 
     @Bean
     public Statement clickHouseStatement() throws Exception {
-        System.out.println(new Gson().toJson(hikariConfig));
-        hikariConfig.setJdbcUrl(fullUrl());
-        hikariConfig.setUsername(username);
-        hikariConfig.setPassword(password);
-        dataSource = new HikariDataSource(hikariConfig);
+        if (dataSource == null) {
+            System.out.println(new Gson().toJson(hikariConfig));
+            hikariConfig.setJdbcUrl(fullUrl());
+            hikariConfig.setUsername(username);
+            hikariConfig.setPassword(password);
+            dataSource = new HikariDataSource(hikariConfig);
+        }
         return dataSource.getConnection().createStatement();
+    }
+
+    public Statement getNewStatement() throws Exception {
+        if (dataSource == null) {
+            System.out.println(new Gson().toJson(hikariConfig));
+            hikariConfig.setJdbcUrl(fullUrl());
+            hikariConfig.setUsername(username);
+            hikariConfig.setPassword(password);
+            dataSource = new HikariDataSource(hikariConfig);
+        }
+        return dataSource.getConnection().createStatement();
+    }
+
+    public Statement threadLocalStatement() throws Exception {
+        if (statement.get() == null) {
+            Statement s = getNewStatement();
+            statement.set(s);
+        }
+        return statement.get();
     }
 
     @Bean

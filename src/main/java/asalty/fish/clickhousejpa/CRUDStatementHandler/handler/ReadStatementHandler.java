@@ -1,6 +1,7 @@
 package asalty.fish.clickhousejpa.CRUDStatementHandler.handler;
 
 import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
+import asalty.fish.clickhousejpa.jdbc.ClickHouseJdbcConfig;
 import asalty.fish.clickhousejpa.mapper.ClickHouseMapper;
 import asalty.fish.clickhousejpa.util.MethodParserUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +28,7 @@ public class ReadStatementHandler implements StatementHandler {
     String database;
 
     @Resource
-    Statement clickHouseStatement;
+    ClickHouseJdbcConfig clickHouseJdbcConfig;
 
     @Resource
     ClickHouseMapper clickHouseMapper;
@@ -47,15 +48,15 @@ public class ReadStatementHandler implements StatementHandler {
         return databaseSQL(clazz) + " limit " + "?";
     }
 
-    public <T> List<T> findAll(Class<T> clazz) throws SQLException {
+    public <T> List<T> findAll(Class<T> clazz) throws Exception {
         String sql = databaseSQL(clazz);
-        return clickHouseMapper.convertResultSetToList(clickHouseStatement.executeQuery(sql), clazz);
+        return clickHouseMapper.convertResultSetToList(clickHouseJdbcConfig.threadLocalStatement().executeQuery(sql), clazz);
     }
 
-    public <T> List<T> findAllLimitedBy(Class<T> clazz, int size) throws SQLException {
+    public <T> List<T> findAllLimitedBy(Class<T> clazz, int size) throws Exception {
         String sql = limitSQL(clazz);
         sql = sql.replace("?", String.valueOf(size));
-        return clickHouseMapper.convertResultSetToList(clickHouseStatement.executeQuery(sql), clazz);
+        return clickHouseMapper.convertResultSetToList(clickHouseJdbcConfig.threadLocalStatement().executeQuery(sql), clazz);
     }
 
     /**
@@ -91,6 +92,6 @@ public class ReadStatementHandler implements StatementHandler {
 
     @Override
     public Object resultHandler(String sql, Class<?> entity, Method method) throws Exception {
-        return clickHouseMapper.convertResultSetToList(clickHouseStatement.executeQuery(sql), entity);
+        return clickHouseMapper.convertResultSetToList(clickHouseJdbcConfig.threadLocalStatement().executeQuery(sql), entity);
     }
 }

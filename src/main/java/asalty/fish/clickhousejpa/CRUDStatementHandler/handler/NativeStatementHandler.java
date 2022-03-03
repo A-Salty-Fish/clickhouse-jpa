@@ -3,6 +3,7 @@ package asalty.fish.clickhousejpa.CRUDStatementHandler.handler;
 import asalty.fish.clickhousejpa.annotation.ClickHouseNativeQuery;
 import asalty.fish.clickhousejpa.exception.NativeQueryException;
 import asalty.fish.clickhousejpa.exception.TypeNotSupportException;
+import asalty.fish.clickhousejpa.jdbc.ClickHouseJdbcConfig;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,9 +19,6 @@ import java.sql.Statement;
  */
 @Service
 public class NativeStatementHandler implements StatementHandler {
-
-    @Resource
-    Statement clickHouseStatement;
 
     public String getNativeSql(Method method, Object[] args) throws NativeQueryException {
         ClickHouseNativeQuery annotation = method.getAnnotation(ClickHouseNativeQuery.class);
@@ -41,6 +39,9 @@ public class NativeStatementHandler implements StatementHandler {
         return rowSql.toString();
     }
 
+    @Resource
+    ClickHouseJdbcConfig clickHouseJdbcConfig;
+
     @Override
     public boolean needHandle(Method method) {
         return method.isAnnotationPresent(ClickHouseNativeQuery.class);
@@ -54,7 +55,7 @@ public class NativeStatementHandler implements StatementHandler {
     @Override
     public Object resultHandler(String sql, Class<?> entity, Method method) throws Exception {
         Class<?> returnType = method.getReturnType();
-        ResultSet resultSet = clickHouseStatement.executeQuery(sql);
+        ResultSet resultSet = clickHouseJdbcConfig.threadLocalStatement().executeQuery(sql);
         Object result;
         if (returnType == void.class) {
             return null;
