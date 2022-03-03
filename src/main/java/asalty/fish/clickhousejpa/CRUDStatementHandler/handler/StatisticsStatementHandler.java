@@ -42,11 +42,6 @@ public class StatisticsStatementHandler implements StatementHandler{
 
     @Override
     public String getRowStatement(Method method, Object[] args, Class<?> entity) throws Exception {
-        return null;
-    }
-
-    @Override
-    public String getStatement(Method method, Object[] args, Class<?> entity) throws Exception {
         String tableName = AnnotationUtil.getTableName(entity);
         StringBuilder methodName = new StringBuilder(method.getName());
         StringBuilder sql = new StringBuilder();
@@ -67,8 +62,13 @@ public class StatisticsStatementHandler implements StatementHandler{
                 }
             }
         }
-        return MethodParserUtil.prepareSqlArgs(sql.toString(), args, method);
+        return sql.toString();
     }
+
+//    @Override
+//    public String getStatement(Method method, Object[] args, Class<?> entity) throws Exception {
+//        return MethodParserUtil.prepareSqlArgs(sql.toString(), args, method);
+//    }
 
     @Override
     public Object resultHandler(String sql, Class<?> entity, Method method) throws Exception {
