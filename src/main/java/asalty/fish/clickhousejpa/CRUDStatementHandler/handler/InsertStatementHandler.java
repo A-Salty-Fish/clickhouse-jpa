@@ -64,7 +64,7 @@ public class InsertStatementHandler implements StatementHandler {
     @Override
     public String getStatement(Method method, Object[] args, Class<?> entity) throws Exception {
         // 这里的参数处理比较特殊，所以需要重写
-        String rowSql = getRowStatement(method, args, entity);
+        String rowSql = getCacheStatement(method, args, entity);
         return getInsertSql(rowSql, args[0]);
     }
 
