@@ -169,7 +169,8 @@ javaTypeToClickhouseMap.put(Double.class.getSimpleName(), "Float64");
 
 ## BenchMark
 ### 与走JDBC的原生SQL比较
-benchmark结果（12线程，5s）：  
+benchmark结果（12线程，5s）（1图为开启SQL缓存，2图为关闭SQL缓存）：  
+![img_3.png](img_3.png)
 ![img_1.png](img_1.png)
 可以看出，经过优化，框架的插入执行速率接近原生SQL执行。（我觉得如果把框架的日志去了可能还能更快一点）
 
