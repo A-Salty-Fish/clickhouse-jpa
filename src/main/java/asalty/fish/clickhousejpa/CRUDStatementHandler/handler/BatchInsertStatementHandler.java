@@ -73,15 +73,16 @@ public class BatchInsertStatementHandler implements StatementHandler {
         StringBuilder sql = new StringBuilder(getCacheStatement(method, args, entity));
         List list = (List) args[0];
         for (int i = 0; i < list.size(); i++) {
-            sql.append(getRowValueSql(entity)).append(",");
-        }
-        sql.deleteCharAt(sql.length() - 1);
-        for (Object o: list) {
+            // 拿到并填充 (?,?,?) 字符串部分
+            StringBuilder valueSql = new StringBuilder(getRowValueSql(entity));
+            Object o = list.get(i);
             for (Field field : o.getClass().getDeclaredFields()) {
                 String value = ClickhouseTypeMap.convertTypeToString(o, field);
-                sql.replace(sql.indexOf("?"), sql.indexOf("?") + 1, value);
+                valueSql.replace(sql.indexOf("?"), valueSql.indexOf("?") + 1, value);
             }
+            sql.append(valueSql).append(",");
         }
+        sql.deleteCharAt(sql.length() - 1);
         return sql.toString();
     }
 
