@@ -159,12 +159,21 @@ javaTypeToClickhouseMap.put(LocalDate.class.getSimpleName(), "Date");
 javaTypeToClickhouseMap.put(Double.class.getSimpleName(), "Float64");
 ```
 
+## 版本日志
 ### v1.0.1
 修复每个线程不能单独拥有一个数据库连接的问题
 
 ### v1.0.2
-提供生成的原生SQL的缓存（使用ConcurrentHashMap，日后考虑换caffeine）
-修复了由于clickhouse读取出来的localdatetime格式为yyyyMMddTHHSS+时区导致的格式转换错误
-benchmark结果（12线程，5s）：
+提供生成的原生SQL的缓存（使用ConcurrentHashMap，日后考虑换caffeine）  
+修复了由于clickhouse读取出来的localdatetime格式为yyyyMMddTHHSS+时区导致的格式转换错误  
+
+## BenchMark
+### 与走JDBC的原生SQL比较
+benchmark结果（12线程，5s）：  
 ![img_1.png](img_1.png)
 可以看出，经过优化，框架的插入执行速率接近原生SQL执行。（我觉得如果把框架的日志去了可能还能更快一点）
+
+### 单次写入与MySQL-JPA比较
+benchmark结果（12线程，5s）：
+![img_2.png](img_2.png)
+可以看出，单次写入还是比mysql慢了不少的，后面可以优化一下批量写入。
