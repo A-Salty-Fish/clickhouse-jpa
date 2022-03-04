@@ -176,5 +176,5 @@ benchmark结果（12线程，5s）（1图为开启SQL缓存，2图为关闭SQL�
 
 ### 单次写入与MySQL-JPA比较
 benchmark结果（12线程，5s）：
-![img_2.png](img_2.png)
-可以看出，单次写入还是比mysql慢了不少的，后面可以优化一下批量写入。
+![img_4.png](img_4.png)
+可以看出，单次写入还是比mysql慢了不少(20%)的，后面可以优化一下批量写入。
