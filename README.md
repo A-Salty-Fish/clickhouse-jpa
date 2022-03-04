@@ -161,13 +161,17 @@ javaTypeToClickhouseMap.put(Double.class.getSimpleName(), "Float64");
 
 ## 版本日志
 ### v1.0.1
-修复每个线程不能单独拥有一个数据库连接的问题
+1. 修复每个线程不能单独拥有一个数据库连接的问题
 
 ### v1.0.2
-提供生成的原生SQL的缓存（使用ConcurrentHashMap，日后考虑换caffeine）  
-修复了由于clickhouse读取出来的localdatetime格式为yyyyMMddTHHSS+时区导致的格式转换错误  
+1. 提供生成的原生SQL的缓存（使用ConcurrentHashMap，日后考虑换caffeine）  
+2. 修复了由于clickhouse读取出来的localdatetime格式为yyyyMMddTHHSS+时区导致的格式转换错误  
 
-## BenchMark
+### v1.0.3
+1. 修复了插入语句未缓存成功的问题
+2. 提供了批量插入代理
+
+## BenchMark（主程序开启12线程，运行5s，clickhouse和mysql均在32G 8核的debian虚拟机上）
 ### 与走JDBC的原生SQL比较
 benchmark结果（12线程，5s）（1图为开启SQL缓存，2图为关闭SQL缓存）：  
 ![img_3.png](img_3.png)
@@ -175,6 +179,22 @@ benchmark结果（12线程，5s）（1图为开启SQL缓存，2图为关闭SQL�
 可以看出，经过优化，框架的插入执行速率接近原生SQL执行。（我觉得如果把框架的日志去了可能还能更快一点）
 
 ### 单次写入与MySQL-JPA比较
-benchmark结果（12线程，5s）：
+benchmark结果：
 ![img_4.png](img_4.png)
 可以看出，单次写入还是比mysql慢了不少(20%)的，后面可以优化一下批量写入。
+
+### 批量写入与MySQL-JPA比较
+1. 每次一次性写入10条时： 
+![img_5.png](img_5.png)
+可以看出，clickhouse此时已经反超mysql 40%
+2. 每次一次性写入50条时
+![img_6.png](img_6.png)
+差距已经拉大到了130%
+3. 每次一次性写入100条时
+![img_7.png](img_7.png)
+差距拉大到了360%
+4. 每次一次性写入200条时
+![img_8.png](img_8.png)
+差距达到了惊人的380%
+
+所以请尽量使用批量写入功能（batchCreate方法）
