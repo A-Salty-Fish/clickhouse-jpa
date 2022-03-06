@@ -4,6 +4,8 @@ import asalty.fish.clickhousejpa.exception.TypeNotSupportException;
 import asalty.fish.clickhousejpa.mapper.ClickHouseMapper;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * @author 13090
@@ -14,6 +16,15 @@ import java.lang.reflect.Method;
 
 public class MethodParserUtil {
 
+    /**
+     * 存放clickhouse仅含一个参数的函数
+     */
+    static HashMap<String, String> oneArgFunctions = new HashMap<>();
+
+    static {
+        oneArgFunctions.put("StartsWith", "startsWith");
+    }
+
     public static String getConditionalSql(String methodNameLeft) {
         StringBuilder sql = new StringBuilder();
         if (methodNameLeft.length() > 0) {
@@ -21,14 +32,23 @@ public class MethodParserUtil {
         }
         String[] methodNameLeftSplit = methodNameLeft.split("And|Or");
         for (String methodNameLeftSplitItem : methodNameLeftSplit) {
-            sql.append(methodNameLeftSplitItem + " = ?");
-            methodNameLeft = methodNameLeft.substring(methodNameLeftSplitItem.length());
-            if (methodNameLeft.startsWith("And")) {
-                sql.append(" and ");
-                methodNameLeft = methodNameLeft.substring(3);
-            } else if (methodNameLeft.startsWith("Or")) {
-                sql.append(" or ");
-                methodNameLeft = methodNameLeft.substring(2);
+            String functionName = getOneArgFunction(methodNameLeftSplitItem);
+            if (functionName != null) {
+                sql.append(oneArgFunctions.get(functionName));
+                sql.append("(");
+                sql.append(methodNameLeftSplitItem.substring(functionName.length()));
+                sql.append(", ");
+                sql.append("? )");
+            } else {
+                sql.append(methodNameLeftSplitItem + " = ?");
+                methodNameLeft = methodNameLeft.substring(methodNameLeftSplitItem.length());
+                if (methodNameLeft.startsWith("And")) {
+                    sql.append(" and ");
+                    methodNameLeft = methodNameLeft.substring(3);
+                } else if (methodNameLeft.startsWith("Or")) {
+                    sql.append(" or ");
+                    methodNameLeft = methodNameLeft.substring(2);
+                }
             }
         }
         return sql.toString();
@@ -41,5 +61,9 @@ public class MethodParserUtil {
             sql.replace(sql.indexOf("?"), sql.indexOf("?") + 1, ClickhouseTypeMap.convertTypeToString(args[i], parameterTypes[i]));
         }
         return sql.toString();
+    }
+
+    private static String getOneArgFunction(String methodName) {
+        return oneArgFunctions.keySet().stream().filter(methodName::startsWith).findFirst().orElse(null);
     }
 }
