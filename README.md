@@ -172,6 +172,8 @@ javaTypeToClickhouseMap.put(Double.class.getSimpleName(), "Float64");
 2. 提供了批量插入代理
 
 ## BenchMark（主程序开启12线程，运行5s，clickhouse和mysql均在32G 8核的debian虚拟机上）
+benchmark代码链接：  
+https://github.com/A-Salty-Fish/IotBigData/tree/main/src/main/java/asalty/fish/iotbigdata/benchmark
 ### 与走JDBC的原生SQL比较
 benchmark结果（12线程，5s）（1图为开启SQL缓存，2图为关闭SQL缓存）：  
 ![img_3.png](img_3.png)
@@ -204,12 +206,23 @@ benchmark结果：
 可以看出，一次性插入200左右的数据时，总吞吐量最高
 
 ### 位运算速度测试
-![img_10.png](img_10.png)
 Clickhouse数据行数为：10405961  
 Mysql数据行数为：9999993
-执行的位运算操作均为：
+执行的位运算操作均为：（参数为随机生成）
 ```mysql
 select max(watchid) from test_mysql_table where ((watchid ^ :watchId) >> :bit) = 0
 ```
+![img_10.png](img_10.png)
 均使用NativeQuery功能  
 可以看出clickhouse比mysql快了接近26倍
+
+# Between统计操作速度测试
+Clickhouse数据行数为：10405961  
+Mysql数据行数为：9999993
+执行的between操作均为：（参数为随机生成）
+```mysql
+select avg(watchid) from test_mysql_table where user_agent_major between :left and :right
+```
+![img_11.png](img_11.png)
+均使用NativeQuery功能  
+可以看出clickhouse比mysql快了接近60倍
