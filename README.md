@@ -202,3 +202,14 @@ benchmark结果：
 ### 不同的写入大小对总写入速率的影响
 ![img_9.png](img_9.png)
 可以看出，一次性插入200左右的数据时，总吞吐量最高
+
+### 位运算速度测试
+![img_10.png](img_10.png)
+Clickhouse数据行数为：10405961  
+Mysql数据行数为：9999993
+执行的位运算操作均为：
+```mysql
+select max(watchid) from test_mysql_table where ((watchid ^ :watchId) >> :bit) = 0
+```
+均使用NativeQuery功能  
+可以看出clickhouse比mysql快了接近26倍
