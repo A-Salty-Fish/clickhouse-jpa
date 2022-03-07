@@ -15,7 +15,7 @@
         <dependency>
             <groupId>asalty.fish</groupId>
             <artifactId>clickhouse-jpa</artifactId>
-            <version>1.0.0-release</version>
+            <version>1.0.4-release</version>
         </dependency>
         <dependency>
             <groupId>com.github.housepower</groupId>
@@ -170,6 +170,9 @@ javaTypeToClickhouseMap.put(Double.class.getSimpleName(), "Float64");
 ### v1.0.3
 1. 修复了插入语句未缓存成功的问题
 2. 提供了批量插入代理
+
+### v1.0.4
+1. 修复一个批量写入的sql拼接问题
 
 ## BenchMark（主程序开启12线程，运行5s，clickhouse和mysql均在32G 8核的debian虚拟机上）
 benchmark代码链接：  
