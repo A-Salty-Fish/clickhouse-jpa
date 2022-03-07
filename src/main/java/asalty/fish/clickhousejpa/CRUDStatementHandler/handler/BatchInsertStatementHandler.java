@@ -78,7 +78,7 @@ public class BatchInsertStatementHandler implements StatementHandler {
             Object o = list.get(i);
             for (Field field : o.getClass().getDeclaredFields()) {
                 String value = ClickhouseTypeMap.convertTypeToString(o, field);
-                valueSql.replace(sql.indexOf("?"), valueSql.indexOf("?") + 1, value);
+                valueSql.replace(valueSql.indexOf("?"), valueSql.indexOf("?") + 1, value);
             }
             sql.append(valueSql).append(",");
         }
