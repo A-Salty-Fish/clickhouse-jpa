@@ -17,12 +17,6 @@ import java.util.List;
 @SpringBootTest
 public class ClassScanTest {
 
-    @Test
-    public void testScan() throws Exception {
-        List<Class<?>> classes = ClassScanUtil.getAllClassByPackageName(Package.getPackage("asalty.fish.clickhousejpa"));
-        classes.forEach(System.out::println);
-    }
-
     @Resource
     private ApplicationContext applicationContext;
 
@@ -31,12 +25,6 @@ public class ClassScanTest {
 //        System.out.println(applicationContext.getClass().getPackage().getName());
 //        List<Class<?>> classes = ClassScanUtil.getAllClassByPackageName(ClickhouseJpaApplication.class.getPackage());
 //        classes.forEach(System.out::println);
-    }
-
-    @Test
-    public void testGetAllClassesWithAnnotation() throws Exception {
-        List<Class<?>> classes = ClassScanUtil.getAllClassesWithAnnotation(applicationContext, ClickHouseEntity.class);
-        classes.forEach(x -> System.out.println(x.getSimpleName()));
     }
 
 }
