@@ -137,7 +137,7 @@ public class TableCreateHandler {
 
     public String getAutoColumnsPartSql(Class<?> entity) throws TypeNotSupportException {
         ClickHouseTimeColumns clickHouseTimeColumns = entity.getAnnotation(ClickHouseTimeColumns.class);
-        if (clickHouseTimeColumns == null) {
+        if (clickHouseTimeColumns != null) {
             StringBuilder autoColumnsPartSql = new StringBuilder();
             if (clickHouseTimeColumns.year()) {
                 autoColumnsPartSql.append(" " + YEAR_COLUMN_NAME + " " + ClickhouseTypeMap.getClickhouseType(Integer.class.getSimpleName()) + ",");
@@ -148,6 +148,7 @@ public class TableCreateHandler {
             if (clickHouseTimeColumns.day()) {
                 autoColumnsPartSql.append(" " + DAY_COLUMN_NAME + " " + ClickhouseTypeMap.getClickhouseType(Integer.class.getSimpleName()) + ",");
             }
+            return autoColumnsPartSql.toString();
         }
         return "";
     }
