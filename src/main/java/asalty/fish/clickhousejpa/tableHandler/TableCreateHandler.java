@@ -2,6 +2,7 @@ package asalty.fish.clickhousejpa.tableHandler;
 
 import asalty.fish.clickhousejpa.annotation.ClickHouseColumn;
 import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
+import asalty.fish.clickhousejpa.annotation.ClickHouseTimeColumns;
 import asalty.fish.clickhousejpa.exception.TableCreateException;
 import asalty.fish.clickhousejpa.exception.TypeNotSupportException;
 import asalty.fish.clickhousejpa.util.AnnotationUtil;
@@ -62,6 +63,8 @@ public class TableCreateHandler {
                 orderByFields.add(field);
             }
         }
+        // 处理自动生成列
+        createTableSql.append(getAutoColumnsPartSql(entity));
         createTableSql.deleteCharAt(createTableSql.length() - 1);
         createTableSql.append(")");
         // 表引擎
@@ -124,5 +127,28 @@ public class TableCreateHandler {
         } else {
             log.info(AnnotationUtil.getTableName(entity) + " already exists.");
         }
+    }
+
+    final static String YEAR_COLUMN_NAME = "Year";
+
+    final static String MONTH_COLUMN_NAME = "Month";
+
+    final static String DAY_COLUMN_NAME = "Day";
+
+    public String getAutoColumnsPartSql(Class<?> entity) throws TypeNotSupportException {
+        ClickHouseTimeColumns clickHouseTimeColumns = entity.getAnnotation(ClickHouseTimeColumns.class);
+        if (clickHouseTimeColumns == null) {
+            StringBuilder autoColumnsPartSql = new StringBuilder();
+            if (clickHouseTimeColumns.year()) {
+                autoColumnsPartSql.append(" " + YEAR_COLUMN_NAME + " " + ClickhouseTypeMap.getClickhouseType(Integer.class.getSimpleName()) + ",");
+            }
+            if (clickHouseTimeColumns.month()) {
+                autoColumnsPartSql.append(" " + MONTH_COLUMN_NAME + " " + ClickhouseTypeMap.getClickhouseType(Integer.class.getSimpleName()) + ",");
+            }
+            if (clickHouseTimeColumns.day()) {
+                autoColumnsPartSql.append(" " + DAY_COLUMN_NAME + " " + ClickhouseTypeMap.getClickhouseType(Integer.class.getSimpleName()) + ",");
+            }
+        }
+        return "";
     }
 }
