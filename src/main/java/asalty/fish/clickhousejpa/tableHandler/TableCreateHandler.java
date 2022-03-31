@@ -1,6 +1,7 @@
 package asalty.fish.clickhousejpa.tableHandler;
 
 import asalty.fish.clickhousejpa.annotation.ClickHouseColumn;
+import asalty.fish.clickhousejpa.annotation.ClickHouseGeoColumns;
 import asalty.fish.clickhousejpa.annotation.ClickHouseTable;
 import asalty.fish.clickhousejpa.annotation.ClickHouseTimeColumns;
 import asalty.fish.clickhousejpa.exception.TableCreateException;
@@ -64,7 +65,8 @@ public class TableCreateHandler {
             }
         }
         // 处理自动生成列
-        createTableSql.append(getAutoColumnsPartSql(entity));
+        createTableSql.append(getAutoTimeColumnsPartSql(entity));
+        createTableSql.append(getAutoGeoColumnsPartSql(entity));
         createTableSql.deleteCharAt(createTableSql.length() - 1);
         createTableSql.append(")");
         // 表引擎
@@ -135,7 +137,7 @@ public class TableCreateHandler {
 
     final static String DAY_COLUMN_NAME = "Day";
 
-    public String getAutoColumnsPartSql(Class<?> entity) throws TypeNotSupportException {
+    public String getAutoTimeColumnsPartSql(Class<?> entity) throws TypeNotSupportException {
         ClickHouseTimeColumns clickHouseTimeColumns = entity.getAnnotation(ClickHouseTimeColumns.class);
         if (clickHouseTimeColumns != null) {
             StringBuilder autoColumnsPartSql = new StringBuilder();
@@ -147,6 +149,21 @@ public class TableCreateHandler {
             }
             if (clickHouseTimeColumns.day()) {
                 autoColumnsPartSql.append(" " + DAY_COLUMN_NAME + " " + ClickhouseTypeMap.getClickhouseType(Integer.class.getSimpleName()) + ",");
+            }
+            return autoColumnsPartSql.toString();
+        }
+        return "";
+    }
+
+    public String GEO_COLUMN_NAME = "Geo";
+
+    public String getAutoGeoColumnsPartSql(Class<?> entity) throws TypeNotSupportException {
+        ClickHouseGeoColumns clickHouseGeoColumns = entity.getAnnotation(ClickHouseGeoColumns.class);
+        if (clickHouseGeoColumns != null) {
+            StringBuilder autoColumnsPartSql = new StringBuilder();
+            int level = clickHouseGeoColumns.level();
+            for (int i = 0; i < level; i++) {
+                autoColumnsPartSql.append(" " + GEO_COLUMN_NAME + i + " " + ClickhouseTypeMap.getClickhouseType(Integer.class.getSimpleName()) + ",");
             }
             return autoColumnsPartSql.toString();
         }
